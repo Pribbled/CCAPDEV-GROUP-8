@@ -37,9 +37,8 @@
 
         .table-container {
             width: 100%;
-            max-height: 400px;
-            overflow-y: auto;
             border-radius: 8px;
+            overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
@@ -63,44 +62,27 @@
             border-bottom: 1px solid #ddd;
         }
 
-        #table-availability tbody tr:hover {
-            background-color: #f1f1f1;
-        }
-
-
-        #table-body {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .table-container {
-            width: 100%;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
         .table-body-container {
             max-height: 260px;
             overflow-y: auto;
             display: block;
         }
 
-        .table-body-container table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
         #table-body tr {
             display: table;
             width: 100%;
             table-layout: fixed;
+            cursor: pointer;
         }
 
         #table-body td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+        }
+
+        #table-body tr.selected {
+            background-color: #d1f7d1;
         }
 
         #table-body tr:hover {
@@ -116,13 +98,70 @@
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            
+            margin-top: 20px;
         }
 
         .selBtn:hover {
             background-color: #2980b9;
         }
 
+        .checkbox-container {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            margin: 0;
+        }
+
+        /* Confirmation Popup */
+        .confirmation-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .confirmation-popup p {
+            margin: 0 0 20px;
+        }
+
+        .confirmation-popup button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .confirmation-popup button.confirm {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .confirmation-popup button.cancel {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
@@ -147,19 +186,34 @@
         </table>
         <div class="table-body-container">
             <table>
-                <tbody id="table-body">
-                </tbody>
+                <tbody id="table-body"></tbody>
             </table>
         </div>
     </div>
-    <input type="checkbox" id="anonymous_checker" value="anonymous">
-    <label for="anonymous_checker">Reserve Anonymously</label><br>
+    <div class="checkbox-container">
+        <input type="checkbox" id="anonymous_checker" value="anonymous">
+        <label for="anonymous_checker">Reserve Anonymously</label>
+    </div>
     <input type="button" value="Reserve" class="selBtn" id="reserve">
+
+    <!-- Confirmation Popup -->
+    <div class="overlay" id="overlay"></div>
+    <div class="confirmation-popup" id="confirmation-popup">
+        <p>Are you sure you want to reserve the selected slots?</p>
+        <button class="confirm" id="confirm-reserve">Confirm</button>
+        <button class="cancel" id="cancel-reserve">Cancel</button>
+    </div>
 
     <script>
         const labSelection = document.getElementById('lab-selection');
         const dateSelection = document.getElementById('date-selection');
         const tableBody = document.getElementById('table-body');
+        const reserveButton = document.getElementById('reserve');
+        const anonymousChecker = document.getElementById('anonymous_checker');
+        const confirmationPopup = document.getElementById('confirmation-popup');
+        const overlay = document.getElementById('overlay');
+        const confirmReserveButton = document.getElementById('confirm-reserve');
+        const cancelReserveButton = document.getElementById('cancel-reserve');
 
         const today = new Date();
         const maxDate = new Date();
@@ -169,6 +223,8 @@
         dateSelection.min = today.toISOString().split('T')[0];
         dateSelection.max = maxDate.toISOString().split('T')[0];
 
+        let selectedSlots = [];
+
         function updateTable() {
             const lab = labSelection.value;
             const date = dateSelection.value;
@@ -176,10 +232,10 @@
             if (!lab || !date) return;
 
             const data = [
-                { time: '8:00 AM', status: 'Reserved'},
-                { time: '8:30 AM', status: 'Reserved'},
-                { time: '9:00 AM', status: 'Reserved'},
-                { time: '9:30 AM', status: 'Reserved'},
+                { time: '8:00 AM', status: 'Reserved' },
+                { time: '8:30 AM', status: 'Reserved' },
+                { time: '9:00 AM', status: 'Reserved' },
+                { time: '9:30 AM', status: 'Reserved' },
                 { time: '10:00 AM', status: 'Reserved' },
                 { time: '10:30 AM', status: 'Reserved' },
                 { time: '11:00 AM', status: 'Available' },
@@ -202,17 +258,59 @@
             tableBody.innerHTML = '';
 
             data.forEach(slot => {
-                if (slot.status != 'Reserved') {
+                if (slot.status !== 'Reserved') {
                     const row = document.createElement('tr');
-
                     row.innerHTML = `
                         <td>${slot.time}</td>
                         <td>${slot.status}</td>
                     `;
+                    row.addEventListener('click', () => {
+                        row.classList.toggle('selected');
+                        const slotTime = slot.time;
+                        if (row.classList.contains('selected')) {
+                            selectedSlots.push(slotTime);
+                        } else {
+                            selectedSlots = selectedSlots.filter(time => time !== slotTime);
+                        }
+                    });
                     tableBody.appendChild(row);
                 }
             });
         }
+
+        reserveButton.addEventListener('click', () => {
+            if (selectedSlots.length === 0) {
+                alert('Please select at least one slot.');
+                return;
+            }
+            confirmationPopup.style.display = 'block';
+            overlay.style.display = 'block';
+        });
+
+        confirmReserveButton.addEventListener('click', () => {
+            const isAnonymous = anonymousChecker.checked;
+            const reservationData = {
+                lab: labSelection.value,
+                date: dateSelection.value,
+                slots: selectedSlots,
+                isAnonymous: isAnonymous,
+            };
+
+            console.log('Reservation Data:', reservationData);
+            alert('Reservation successful!');
+            confirmationPopup.style.display = 'none';
+            overlay.style.display = 'none';
+            selectedSlots = [];
+            updateTable();
+        });
+
+        cancelReserveButton.addEventListener('click', () => {
+            confirmationPopup.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+
+        labSelection.addEventListener('change', updateTable);
+        dateSelection.addEventListener('change', updateTable);
 
         updateTable();
     </script>
