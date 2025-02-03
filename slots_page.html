@@ -4,130 +4,301 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slot Availability</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: #2c3e50;
+        }
+
+        #selections {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        #lab-selection, #date-selection {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+            color: #333;
+        }
+
+        .table-container {
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #table-availability thead {
+            position: sticky;
+            top: 0;
+            background-color: #2c3e50;
+            color: white;
+            z-index: 100;
+        }
+
+        #table-availability {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        #table-availability th, #table-availability td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #table-availability tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+
+        #table-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .table-container {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-body-container {
+            max-height: 260px;
+            overflow-y: auto;
+            display: block;
+        }
+
+        .table-body-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #table-body tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        #table-body td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #table-body tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .reservee-link {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .reservee-link:hover {
+            text-decoration: underline;
+        }
+
+        .selBtn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #3498db;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .selBtn:hover {
+            background-color: #2980b9;
+        }
+
+        .selBtn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            #selections {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .selBtn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
 <body>
     <h1>Lab Availability</h1>
     <div id="selections">
         <select name="labs" id="lab-selection">
+            <option value="" disabled selected>Select Lab</option>
             <option value="turing">Turing Lab</option>
             <option value="gosling">Gosling Lab</option>
             <option value="lovelace">Lovelace Lab</option>
         </select>
         <input type="date" id="date-selection">
-        <table id="table-availability">
-            <tr>
-                <th>Time</th>
-                <th>Status</th>
-                <th>Reservee</th>
-            </tr>
-            <tr>
-                <td>8:00 AM</td>
-                <td>Reserved</td>
-                <td>Juan Dela Cruz</td>
-            </tr>
-            <tr>
-                <td>8:30 AM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>9:00 AM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>9:30 AM</td>
-                <td>Reserved</td>
-                <td>Agustin Garcia</td>
-            </tr>
-            <tr>
-                <td>10:00 AM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>10:30 AM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>11:00 AM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>11:30 AM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>12:00 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>12:30 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>1:00 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>1:30 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>2:00 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>2:30 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>3:00 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>3:30 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>4:00 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>4:30 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>5:00 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>5:30 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-            <tr>
-                <td>6:00 PM</td>
-                <td>Available</td>
-                <td>None</td>
-            </tr>
-        </table>
-        <input type="button" value="Previous Day" class="selBtn">
-        <input type="button" value="Reserve a Slot" class="selBtn">
-        <input type="button" value="Next Day" class="selBtn">
     </div>
+    <div class="table-container">
+        <table id="table-availability">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Reservee</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="table-body-container">
+            <table>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="button-container">
+        <input type="button" value="Previous Day" class="selBtn" id="prev-day">
+        <input type="button" value="Reserve a Slot" class="selBtn" id="reserve-slot">
+        <input type="button" value="Next Day" class="selBtn" id="next-day">
+    </div>
+
+    <script>
+        const labSelection = document.getElementById('lab-selection');
+        const dateSelection = document.getElementById('date-selection');
+        const tableBody = document.getElementById('table-body');
+        const prevDayBtn = document.getElementById('prev-day');
+        const nextDayBtn = document.getElementById('next-day');
+
+        const today = new Date();
+        const maxDate = new Date();
+        maxDate.setDate(today.getDate() + 7);
+
+        dateSelection.valueAsDate = today;
+        dateSelection.min = today.toISOString().split('T')[0];
+        dateSelection.max = maxDate.toISOString().split('T')[0];
+
+        function updateTable() {
+            const lab = labSelection.value;
+            const date = dateSelection.value;
+
+            if (!lab || !date) return;
+
+            const data = [
+                { time: '8:00 AM', status: 'Reserved', reservee: 'Juan Dela Cruz' },
+                { time: '8:30 AM', status: 'Reserved', reservee: 'Arturo Reyes' },
+                { time: '9:00 AM', status: 'Reserved', reservee: 'Bayani Ramos' },
+                { time: '9:30 AM', status: 'Reserved', reservee: 'Agustin Garcia' },
+                { time: '10:00 AM', status: 'Reserved', reservee: 'Anonymous' },
+                { time: '10:30 AM', status: 'Reserved', reservee: 'Crisanto Mendoza' },
+                { time: '11:00 AM', status: 'Available', reservee: 'None' },
+                { time: '11:30 AM', status: 'Available', reservee: 'None' },
+                { time: '12:00 PM', status: 'Available', reservee: 'None' },
+                { time: '12:30 PM', status: 'Available', reservee: 'None' },
+                { time: '1:00 PM', status: 'Available', reservee: 'None' },
+                { time: '1:30 PM', status: 'Available', reservee: 'None' },
+                { time: '2:00 PM', status: 'Available', reservee: 'None' },
+                { time: '2:30 PM', status: 'Available', reservee: 'None' },
+                { time: '3:00 PM', status: 'Available', reservee: 'None' },
+                { time: '3:30 PM', status: 'Available', reservee: 'None' },
+                { time: '4:00 PM', status: 'Available', reservee: 'None' },
+                { time: '4:30 PM', status: 'Available', reservee: 'None' },
+                { time: '5:00 PM', status: 'Available', reservee: 'None' },
+                { time: '5:30 PM', status: 'Available', reservee: 'None' },
+                { time: '6:00 PM', status: 'Available', reservee: 'None' },
+            ];
+
+            tableBody.innerHTML = '';
+
+            data.forEach(slot => {
+                const row = document.createElement('tr');
+
+                let reserveeName = slot.reservee;
+                if (slot.reservee !== 'None' && slot.reservee !== 'Anonymous') {
+                    reserveeName = `<a href="/user/${slot.reservee}" class="reservee-link">${slot.reservee}</a>`;
+                }
+
+                row.innerHTML = `
+                    <td>${slot.time}</td>
+                    <td>${slot.status}</td>
+                    <td>${reserveeName}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            updateButtons();
+        }
+
+        function updateButtons() {
+            const currentDate = new Date(dateSelection.value);
+            prevDayBtn.disabled = currentDate <= today;
+            nextDayBtn.disabled = currentDate >= maxDate;
+        }
+
+        prevDayBtn.addEventListener('click', () => {
+            const currentDate = new Date(dateSelection.value);
+            if (currentDate > today) {
+                currentDate.setDate(currentDate.getDate() - 1);
+                dateSelection.valueAsDate = currentDate;
+                updateTable();
+            }
+        });
+
+        nextDayBtn.addEventListener('click', () => {
+            const currentDate = new Date(dateSelection.value);
+            if (currentDate < maxDate) {
+                currentDate.setDate(currentDate.getDate() + 1);
+                dateSelection.valueAsDate = currentDate;
+                updateTable();
+            }
+        });
+
+        dateSelection.addEventListener('change', () => {
+            const selectedDate = new Date(dateSelection.value);
+            
+            if (selectedDate < today) {
+                dateSelection.valueAsDate = today;
+            } else if (selectedDate > maxDate) {
+                dateSelection.valueAsDate = maxDate;
+            }
+            
+            updateTable();
+        });
+
+        updateTable();
+
+    </script>
 </body>
 </html>
