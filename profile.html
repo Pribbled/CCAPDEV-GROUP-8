@@ -1,0 +1,255 @@
+<head>
+    <title>
+        Profile
+    </title>
+
+    <style>
+        body {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        }
+        .profile-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            right: 22vw;
+        }
+        .profile-container {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            right: 1vw;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .profile-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+        .profile-container:hover .edit-icon {
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+        .edit-icon {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            display: none;
+            cursor: pointer;
+            object-fit: contain;
+            transform: scale(0.6);
+        }
+        .profile-container input {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+        .profile-container:hover {
+            opacity: 1;
+        }
+        .profile-container:hover input {
+            opacity: 1;
+        }
+        .profile-info {
+            margin-left: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+        .name {
+            font-size: 26px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .name-edit-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .name-edit-button-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+        .name-edit-button-icon:hover {
+            transform: scale(1.1);
+        }
+        .email {
+            font-size: 16px;
+            color: gray;
+        }
+        .background-divider {
+            position: fixed;
+            top: 25%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: gray;
+            z-index: -1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .reservations-title {
+            width: 80%;
+            max-width: 900px;
+            text-align: left;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            position: relative;
+            left: -10px;
+            color: rgba(0, 0, 0, 0.737);
+        }
+        .outer-container {
+            width: 80%;
+            max-width: 900px;
+            overflow-x: auto;
+            border-radius: 10px;
+            background: bisque;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            white-space: nowrap;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .reservations-space {
+            display: flex;
+            gap: 20px;
+        }
+        .reservation-box {
+            min-width: 250px;
+            min-height: 150px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            text-align: left;
+        }
+        .buttons-container {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .edit-button, .cancel-button {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .edit-button {
+            background-color: green;
+            color: white;
+        }
+        .cancel-button {
+            background-color: red;
+            color: white;
+        }
+        .scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+        }
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class = "profile-wrapper">
+        <div class = "profile-container">
+            <img src = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg?20200418092106" alt = "Profile Picture">
+            <img class = "edit-icon" src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/150px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt = "Edit Icon">
+        </div>
+        <div class = "profile-info">
+            <div class = "name">First Name Last Name
+                <button class = "name-edit-button">
+                    <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/150px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Edit Icon" class="name-edit-button-icon">
+                </button>
+            </div>
+            <div class = "email">email@dlsu.edu.ph</div>
+        </div>
+    </div>
+
+    <div class = "background-divider"></div>
+
+    <div class = "reservations-title">Reservations</div>
+
+    <div class = "outer-container">
+        <div class = "reservations-space">
+            <div class = "reservation-box">
+                <p><strong>Lab: </strong>Gokongwei 302A</p>
+                <p><strong>Date: </strong>02-03-2025</p>
+                <p><strong>Time: </strong>14:30-16:00</p>
+                <p><strong>Seats: </strong>2</p>
+                <div class = "buttons-container">
+                    <button class = "edit-button">Edit</button>
+                    <button class = "cancel-button">Cancel</button>
+                </div>
+            </div>
+            <div class = "reservation-box">
+                <p><strong>Lab: </strong>Gokongwei 303A</p>
+                <p><strong>Date: </strong>02-04-2025</p>
+                <p><strong>Time: </strong>11:00-12:30</p>
+                <p><strong>Seats: </strong>4</p>
+                <div class = "buttons-container">
+                    <button class = "edit-button">Edit</button>
+                    <button class = "cancel-button">Cancel</button>
+                </div>
+            </div>
+            <div class = "reservation-box">
+                <p><strong>Lab: </strong>Gokongwei 302B</p>
+                <p><strong>Date: </strong>02-05-2025</p>
+                <p><strong>Time: </strong>09:15-10:45</p>
+                <p><strong>Seats: </strong>1</p>
+                <div class = "buttons-container">
+                    <button class = "edit-button">Edit</button>
+                    <button class = "cancel-button">Cancel</button>
+                </div>
+            </div>
+            <div class = "reservation-box">
+                <p><strong>Lab: </strong>Gokongwei 303B</p>
+                <p><strong>Date: </strong>02-06-2025</p>
+                <p><strong>Time: </strong>12:45-14:15</p>
+                <p><strong>Seats: </strong>10</p>
+                <div class = "buttons-container">
+                    <button class = "edit-button">Edit</button>
+                    <button class = "cancel-button">Cancel</button>
+                </div>
+            </div>
+            <div class = "reservation-box">
+                <p><strong>Lab: </strong>Gokongwei 304</p>
+                <p><strong>Date: </strong>02-07-2025</p>
+                <p><strong>Time: </strong>07:00-08:30</p>
+                <p><strong>Seats: </strong>2</p>
+                <div class = "buttons-container">
+                    <button class = "edit-button">Edit</button>
+                    <button class = "cancel-button">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
