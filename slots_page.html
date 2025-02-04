@@ -247,7 +247,26 @@
 
                 let reserveeName = slot.reservee;
                 if (slot.reservee !== 'None' && slot.reservee !== 'Anonymous') {
-                    reserveeName = `<a href="/user/${slot.reservee}" class="reservee-link">${slot.reservee}</a>`;
+                    switch (slot.reservee) {
+                        case 'Juan Dela Cruz':
+                            reserveeName = `<a href="users/user1.html" class="reservee-link">${slot.reservee}</a>`;
+                            break;
+                        case 'Arturo Reyes':
+                            reserveeName = `<a href="users/user2.html" class="reservee-link">${slot.reservee}</a>`;
+                            break;
+                        case 'Bayani Ramos':
+                            reserveeName = `<a href="users/user3.html" class="reservee-link">${slot.reservee}</a>`;
+                            break;
+                        case 'Agustin Garcia':
+                            reserveeName = `<a href="users/user4.html" class="reservee-link">${slot.reservee}</a>`;
+                            break;
+                        case 'Crisanto Mendoza':
+                            reserveeName = `<a href="users/user5.html" class="reservee-link">${slot.reservee}</a>`;
+                            break;
+                        default:
+                            break;
+                    }
+                    
                 }
 
                 row.innerHTML = `
