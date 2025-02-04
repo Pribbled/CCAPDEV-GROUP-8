@@ -69,6 +69,36 @@
 </head>
 
 <body>
+
+    <script>
+        const user = {
+            email: "sample@.com",
+            password: "12345678",
+            category: "student"
+        };
+
+        function handleLogin() {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var rememberMe = document.getElementById('remember').value;
+
+            if(email === user.email && password === user.password) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userCategory', user.category);
+
+                if(rememberMe) {
+                    localStorage.setItem('rememberMe', 'true');
+                }
+
+                window.location.href = 'home.html';
+            } else {
+                alert("Invalid email or password");
+            }
+        }
+    </script>
+
+
+
     <div class="container">
 
         <h2>Log In</h2>
@@ -83,7 +113,7 @@
             <label for="remember">Remember me</label>
         </div>
         
-        <button>Log In</button>
+        <button onclick="handleLogin()">Log In</button>
         
         <p class="register-link">Don't have an account? <a href="register.html">Register</a></p>
 
