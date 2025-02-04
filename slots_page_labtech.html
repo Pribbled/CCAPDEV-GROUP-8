@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations for Today</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: #2c3e50;
+        }
+
+        #selections {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        #lab-selection, #date-selection {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+            color: #333;
+        }
+
+        .table-container {
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #table-availability thead {
+            position: sticky;
+            top: 0;
+            background-color: #2c3e50;
+            color: white;
+            z-index: 100;
+        }
+
+        #table-availability {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        #table-availability th, #table-availability td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #table-availability tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        #table-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .table-container {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-body-container {
+            max-height: 260px;
+            overflow-y: auto;
+            display: block;
+        }
+
+        .table-body-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #table-body tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        #table-body td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #table-body tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .reservee-link {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .reservee-link:hover {
+            text-decoration: underline;
+        }
+
+        .cancel-slot {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #e74c3c;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cancel-slot:hover {
+            background-color: #c0392b;
+        }
+
+        .confirmation-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .confirmation-popup p {
+            margin: 0 0 20px;
+        }
+
+        .confirmation-popup button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .confirmation-popup button.confirm {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .confirmation-popup button.cancel {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        @media (max-width: 600px) {
+            #selections {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .selBtn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Reservations</h1>
+    <div id="selections">
+        <select name="labs" id="lab-selection">
+            <option value="" disabled selected>Select Lab</option>
+            <option value="turing">Turing Lab</option>
+            <option value="gosling">Gosling Lab</option>
+            <option value="lovelace">Lovelace Lab</option>
+        </select>
+    </div>
+    <div class="table-container">
+        <table id="table-availability">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Reservee</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+        <div class="table-body-container">
+            <table>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Confirmation Popup -->
+    <div class="overlay" id="overlay"></div>
+    <div class="confirmation-popup" id="confirmation-popup">
+        <p>Are you sure you want to remove the selected slot?</p>
+        <button class="confirm" id="confirm-remove">Confirm</button>
+        <button class="cancel" id="cancel-remove">Cancel</button>
+    </div>
+
+    <script>
+        const labSelection = document.getElementById('lab-selection');
+        const tableBody = document.getElementById('table-body');
+        const confirmationPopup = document.getElementById('confirmation-popup');
+        const overlay = document.getElementById('overlay');
+        const confirmRemoveButton = document.getElementById('confirm-remove');
+        const cancelRemoveButton = document.getElementById('cancel-remove');
+
+        const today = new Date();
+        let selectedRow = null;
+
+        function updateTable() {
+            const lab = labSelection.value;
+
+            if (!lab) return;
+
+            const data = [
+                { time: '8:00 AM', status: 'Reserved', reservee: 'Juan Dela Cruz' },
+                { time: '8:30 AM', status: 'Reserved', reservee: 'Arturo Reyes' },
+                { time: '9:00 AM', status: 'Reserved', reservee: 'Bayani Ramos' },
+                { time: '9:30 AM', status: 'Reserved', reservee: 'Agustin Garcia' },
+                { time: '10:00 AM', status: 'Reserved', reservee: 'Anonymous' },
+                { time: '10:30 AM', status: 'Reserved', reservee: 'Crisanto Mendoza' },
+                { time: '11:00 AM', status: 'Available', reservee: 'None' },
+                { time: '11:30 AM', status: 'Available', reservee: 'None' },
+                { time: '12:00 PM', status: 'Available', reservee: 'None' },
+                { time: '12:30 PM', status: 'Available', reservee: 'None' },
+                { time: '1:00 PM', status: 'Available', reservee: 'None' },
+                { time: '1:30 PM', status: 'Available', reservee: 'None' },
+                { time: '2:00 PM', status: 'Available', reservee: 'None' },
+                { time: '2:30 PM', status: 'Available', reservee: 'None' },
+                { time: '3:00 PM', status: 'Available', reservee: 'None' },
+                { time: '3:30 PM', status: 'Available', reservee: 'None' },
+                { time: '4:00 PM', status: 'Available', reservee: 'None' },
+                { time: '4:30 PM', status: 'Available', reservee: 'None' },
+                { time: '5:00 PM', status: 'Available', reservee: 'None' },
+                { time: '5:30 PM', status: 'Available', reservee: 'None' },
+                { time: '6:00 PM', status: 'Available', reservee: 'None' },
+            ];
+
+            tableBody.innerHTML = '';
+
+            data.forEach(slot => {
+                if (slot.status === 'Reserved') {
+                    const row = document.createElement('tr');
+
+                    let reserveeName = slot.reservee;
+                    if (slot.reservee !== 'None' && slot.reservee !== 'Anonymous') {
+                        reserveeName = `<a href="/user/${slot.reservee}" class="reservee-link">${slot.reservee}</a>`;
+                    }
+
+                    row.innerHTML = `
+                        <td>${slot.time}</td>
+                        <td>${slot.status}</td>
+                        <td>${reserveeName}</td>
+                        <td><button class="cancel-slot" onclick="removeSlot(this)">Remove</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            });
+        }
+
+        function removeSlot(button) {
+            selectedRow = button.closest('tr');
+            confirmationPopup.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+
+        confirmRemoveButton.addEventListener('click', () => {
+            if (selectedRow) {
+                selectedRow.remove();
+                alert('Slot removed successfully!');
+            }
+            confirmationPopup.style.display = 'none';
+            overlay.style.display = 'none';
+            selectedRow = null;
+        });
+
+        cancelRemoveButton.addEventListener('click', () => {
+            confirmationPopup.style.display = 'none';
+            overlay.style.display = 'none';
+            selectedRow = null;
+        });
+
+        labSelection.addEventListener('change', updateTable);
+
+        updateTable();
+    </script>
+</body>
+</html>
