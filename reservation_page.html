@@ -186,7 +186,7 @@
 
             <div class="d-lg-flex ms-auto">
                 <form class="d-flex">
-                    <input class="form-control me-2" type="search" aria-label="Search">
+                    <input class="form-control me-2" type="search" aria-label="Search" placeholder="Search for user...">
                     <button class="btn btn-outline-primary text-uppercase" type="submit">Search</button>
                 </form>
                 
@@ -213,12 +213,13 @@
                 <option value="lovelace">Lovelace Lab</option>
             </select>
             <input type="date" id="date-selection">
+            <input type="time" id="time-selection">
         </div>
         <div class="table-container">
             <table id="table-availability">
                 <thead>
                     <tr>
-                        <th>Time</th>
+                        <th>Seats</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -234,6 +235,8 @@
             <label for="anonymous_checker">Reserve Anonymously</label>
         </div>
         <input type="button" value="Reserve" class="selBtn" id="reserve">
+
+        <button class="selBtn" onclick = "reservationLabTech()">Lab Tech's View of Reservation Page</button>
 
         <!-- Confirmation Popup -->
         <div class="overlay" id="overlay"></div>
@@ -272,28 +275,29 @@
             if (!lab || !date) return;
 
             const data = [
-                { time: '8:00 AM', status: 'Reserved' },
-                { time: '8:30 AM', status: 'Reserved' },
-                { time: '9:00 AM', status: 'Reserved' },
-                { time: '9:30 AM', status: 'Reserved' },
-                { time: '10:00 AM', status: 'Reserved' },
-                { time: '10:30 AM', status: 'Reserved' },
-                { time: '11:00 AM', status: 'Available' },
-                { time: '11:30 AM', status: 'Available' },
-                { time: '12:00 PM', status: 'Available' },
-                { time: '12:30 PM', status: 'Available' },
-                { time: '1:00 PM', status: 'Available' },
-                { time: '1:30 PM', status: 'Available' },
-                { time: '2:00 PM', status: 'Available' },
-                { time: '2:30 PM', status: 'Available' },
-                { time: '3:00 PM', status: 'Available' },
-                { time: '3:30 PM', status: 'Available' },
-                { time: '4:00 PM', status: 'Available' },
-                { time: '4:30 PM', status: 'Available' },
-                { time: '5:00 PM', status: 'Available' },
-                { time: '5:30 PM', status: 'Available' },
-                { time: '6:00 PM', status: 'Available' },
+                { seat: '1', status: 'Reserved' },
+                { seat: '2', status: 'Reserved' },
+                { seat: '3', status: 'Reserved' },
+                { seat: '4', status: 'Reserved' },
+                { seat: '5', status: 'Reserved' },
+                { seat: '6', status: 'Reserved' },
+                { seat: '7', status: 'Available' },
+                { seat: '8', status: 'Available' },
+                { seat: '9', status: 'Available' },
+                { seat: '10', status: 'Available' },
+                { seat: '11', status: 'Available' },
+                { seat: '12', status: 'Available' },
+                { seat: '13', status: 'Available' },
+                { seat: '14', status: 'Available' },
+                { seat: '15', status: 'Available' },
+                { seat: '16', status: 'Available' },
+                { seat: '17', status: 'Available' },
+                { seat: '18', status: 'Available' },
+                { seat: '19', status: 'Available' },
+                { seat: '20', status: 'Available' },
+                { seat: '21', status: 'Available' },
             ];
+
 
             tableBody.innerHTML = '';
 
@@ -301,16 +305,16 @@
                 if (slot.status !== 'Reserved') {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${slot.time}</td>
+                        <td>${slot.seat}</td>
                         <td>${slot.status}</td>
                     `;
                     row.addEventListener('click', () => {
                         row.classList.toggle('selected');
-                        const slotTime = slot.time;
+                        const slotSeat = slot.seat;
                         if (row.classList.contains('selected')) {
-                            selectedSlots.push(slotTime);
+                            selectedSlots.push(slotSeat);
                         } else {
-                            selectedSlots = selectedSlots.filter(time => time !== slotTime);
+                            selectedSlots = selectedSlots.filter(seat => seat !== slotSeat);
                         }
                     });
                     tableBody.appendChild(row);
@@ -369,6 +373,11 @@
         dateSelection.addEventListener('change', updateTable);
 
         updateTable();
+
+        function reservationLabTech() {
+            window.location.href = "reservation_page_labtech.html";
+        }
+
     </script>
 </body>
 </html>

@@ -181,7 +181,7 @@
 
             <div class="d-lg-flex ms-auto">
                 <form class="d-flex">
-                    <input class="form-control me-2" type="search" aria-label="Search">
+                    <input class="form-control me-2" type="search" aria-label="Search" placeholder="Search for user...">
                     <button class="btn btn-outline-primary text-uppercase" type="submit">Search</button>
                 </form>
                 
@@ -208,12 +208,13 @@
             <option value="lovelace">Lovelace Lab</option>
         </select>
         <input type="date" id="date-selection">
+        <input type="time" id="time-selection">
     </div>
     <div class="table-container">
         <table id="table-availability">
             <thead>
                 <tr>
-                    <th>Time</th>
+                    <th>Seats</th>
                     <th>Status</th>
                     <th>Reservee</th>
                 </tr>
@@ -231,6 +232,10 @@
         <input type="button" value="Previous Day" class="selBtn" id="prev-day">
         <input type="button" value="Reserve a Slot" class="selBtn" onclick="reserveButton()" id="reserve-slot">
         <input type="button" value="Next Day" class="selBtn" id="next-day">
+    </div>
+
+    <div class = "button-container">
+    <button class="selBtn" onclick = "slotsTechnician()">Technician's View of Slots Page</button>
     </div>
 
     <script>
@@ -255,28 +260,29 @@
             if (!lab || !date) return;
 
             const data = [
-                { time: '8:00 AM', status: 'Reserved', reservee: 'Juan Dela Cruz' },
-                { time: '8:30 AM', status: 'Reserved', reservee: 'Arturo Reyes' },
-                { time: '9:00 AM', status: 'Reserved', reservee: 'Bayani Ramos' },
-                { time: '9:30 AM', status: 'Reserved', reservee: 'Agustin Garcia' },
-                { time: '10:00 AM', status: 'Reserved', reservee: 'Anonymous' },
-                { time: '10:30 AM', status: 'Reserved', reservee: 'Crisanto Mendoza' },
-                { time: '11:00 AM', status: 'Available', reservee: 'None' },
-                { time: '11:30 AM', status: 'Available', reservee: 'None' },
-                { time: '12:00 PM', status: 'Available', reservee: 'None' },
-                { time: '12:30 PM', status: 'Available', reservee: 'None' },
-                { time: '1:00 PM', status: 'Available', reservee: 'None' },
-                { time: '1:30 PM', status: 'Available', reservee: 'None' },
-                { time: '2:00 PM', status: 'Available', reservee: 'None' },
-                { time: '2:30 PM', status: 'Available', reservee: 'None' },
-                { time: '3:00 PM', status: 'Available', reservee: 'None' },
-                { time: '3:30 PM', status: 'Available', reservee: 'None' },
-                { time: '4:00 PM', status: 'Available', reservee: 'None' },
-                { time: '4:30 PM', status: 'Available', reservee: 'None' },
-                { time: '5:00 PM', status: 'Available', reservee: 'None' },
-                { time: '5:30 PM', status: 'Available', reservee: 'None' },
-                { time: '6:00 PM', status: 'Available', reservee: 'None' },
+                { seat: '1', status: 'Reserved', reservee: 'Juan Dela Cruz' },
+                { seat: '2', status: 'Reserved', reservee: 'Arturo Reyes' },
+                { seat: '3', status: 'Reserved', reservee: 'Bayani Ramos' },
+                { seat: '4', status: 'Reserved', reservee: 'Agustin Garcia' },
+                { seat: '5', status: 'Reserved', reservee: 'Anonymous' },
+                { seat: '6', status: 'Reserved', reservee: 'Crisanto Mendoza' },
+                { seat: '7', status: 'Available', reservee: 'None' },
+                { seat: '8', status: 'Available', reservee: 'None' },
+                { seat: '9', status: 'Available', reservee: 'None' },
+                { seat: '10', status: 'Available', reservee: 'None' },
+                { seat: '11', status: 'Available', reservee: 'None' },
+                { seat: '12', status: 'Available', reservee: 'None' },
+                { seat: '13', status: 'Available', reservee: 'None' },
+                { seat: '14', status: 'Available', reservee: 'None' },
+                { seat: '15', status: 'Available', reservee: 'None' },
+                { seat: '16', status: 'Available', reservee: 'None' },
+                { seat: '17', status: 'Available', reservee: 'None' },
+                { seat: '18', status: 'Available', reservee: 'None' },
+                { seat: '19', status: 'Available', reservee: 'None' },
+                { seat: '20', status: 'Available', reservee: 'None' },
+                { seat: '21', status: 'Available', reservee: 'None' },
             ];
+
 
             tableBody.innerHTML = '';
 
@@ -285,21 +291,21 @@
 
                 let reserveeName = slot.reservee;
                 if (slot.reservee !== 'None' && slot.reservee !== 'Anonymous') {
-                    switch (slot.reservee) {
+                    switch (slot.reservee) { // Carlos: temporary link to profile.html
                         case 'Juan Dela Cruz':
-                            reserveeName = `<a href="users/user1.html" class="reservee-link">${slot.reservee}</a>`;
+                            reserveeName = `<a href="profile.html" class="reservee-link">${slot.reservee}</a>`;
                             break;
                         case 'Arturo Reyes':
-                            reserveeName = `<a href="users/user2.html" class="reservee-link">${slot.reservee}</a>`;
+                            reserveeName = `<a href="profile.html" class="reservee-link">${slot.reservee}</a>`;
                             break;
                         case 'Bayani Ramos':
-                            reserveeName = `<a href="users/user3.html" class="reservee-link">${slot.reservee}</a>`;
+                            reserveeName = `<a href="profile.html" class="reservee-link">${slot.reservee}</a>`;
                             break;
                         case 'Agustin Garcia':
-                            reserveeName = `<a href="users/user4.html" class="reservee-link">${slot.reservee}</a>`;
+                            reserveeName = `<a href="profile.html" class="reservee-link">${slot.reservee}</a>`;
                             break;
                         case 'Crisanto Mendoza':
-                            reserveeName = `<a href="users/user5.html" class="reservee-link">${slot.reservee}</a>`;
+                            reserveeName = `<a href="profile.html" class="reservee-link">${slot.reservee}</a>`;
                             break;
                         default:
                             break;
@@ -308,7 +314,7 @@
                 }
 
                 row.innerHTML = `
-                    <td>${slot.time}</td>
+                    <td>${slot.seat}</td>
                     <td>${slot.status}</td>
                     <td>${reserveeName}</td>
                 `;
@@ -371,6 +377,9 @@
 
         updateTable();
 
+        function slotsTechnician() {
+            window.location.href = "slots_page_labtech.html";
+        }
     </script>
 </body>
 </html>

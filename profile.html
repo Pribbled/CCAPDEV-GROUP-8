@@ -274,7 +274,7 @@
 
             <div class="d-lg-flex ms-auto">
                 <form class="d-flex">
-                    <input class="form-control me-2" type="search" aria-label="Search">
+                    <input class="form-control me-2" type="search" aria-label="Search" placeholder="Search for user...">
                     <button class="btn btn-outline-primary text-uppercase" type="submit">Search</button>
                 </form>
                 
@@ -390,7 +390,6 @@
     <div class = "buttons-container">
         <button class="edit-button" onclick="logout()">Logout</button>
         <button class="cancel-button" onclick = "deleteAccount()">Delete Account</button>
-        <button class="edit-button" onclick="profileVisit()">View as Visitor</button>
         <button class="cancel-button" onclick = "profileTechnician()">View Technician's Profile</button>
     </div>
 
@@ -403,16 +402,13 @@
             const date = reservationBox.querySelector('p:nth-child(2)').textContent.replace('Date: ', '');
             const time = reservationBox.querySelector('p:nth-child(3)').textContent.replace('Time: ', '');
 
-            // Set the current values in the overlay
             document.getElementById('edit-lab').value = lab;
             document.getElementById('edit-date').value = date;
-            document.getElementById('edit-time').value = time.split('-')[0]; // Set the start time
+            document.getElementById('edit-time').value = time.split('-')[0];
 
-            // Show the overlay
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('edit-overlay').style.display = 'block';
 
-            // Track the selected reservation
             selectedReservation = reservationBox;
         }
 
@@ -428,13 +424,11 @@
             const newTime = document.getElementById('edit-time').value;
 
             if (selectedReservation) {
-                // Update the reservation information
                 selectedReservation.querySelector('p:nth-child(1)').textContent = `Lab: ${newLab}`;
                 selectedReservation.querySelector('p:nth-child(2)').textContent = `Date: ${newDate}`;
-                selectedReservation.querySelector('p:nth-child(3)').textContent = `Time: ${newTime}-${newTime + 1}:30`; // Adjust end time as needed
+                selectedReservation.querySelector('p:nth-child(3)').textContent = `Time: ${newTime}-${newTime + 1}:30`;
 
-                // Simulate checking if the new time slot is available
-                const isSlotAvailable = true; // Replace with actual availability check
+                const isSlotAvailable = true;
                 if (isSlotAvailable) {
                     alert('Reservation updated successfully!');
                 } else {
@@ -459,10 +453,6 @@
 
         function isLoggedIn() {
             return localStorage.getItem('isLoggedIn') === 'true';
-        }
-
-        function profileVisit() {
-            window.location.href = "profileVisit.html";
         }
 
         function profileTechnician() {
