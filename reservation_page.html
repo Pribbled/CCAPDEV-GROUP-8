@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <title>Reserve a Slot</title>
     <style>
         body {
@@ -17,6 +19,7 @@
             margin: 0;
             font-size: 2rem;
             color: #2c3e50;
+            position: relative;
         }
 
         #selections {
@@ -165,43 +168,80 @@
     </style>
 </head>
 <body>
-    <h1>Reservation Page</h1>
-    <div id="selections">
-        <select name="labs" id="lab-selection">
-            <option value="" disabled selected>Select Lab</option>
-            <option value="turing">Turing Lab</option>
-            <option value="gosling">Gosling Lab</option>
-            <option value="lovelace">Lovelace Lab</option>
-        </select>
-        <input type="date" id="date-selection">
-    </div>
-    <div class="table-container">
-        <table id="table-availability">
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-        </table>
-        <div class="table-body-container">
-            <table>
-                <tbody id="table-body"></tbody>
-            </table>
-        </div>
-    </div>
-    <div class="checkbox-container">
-        <input type="checkbox" id="anonymous_checker" value="anonymous">
-        <label for="anonymous_checker">Reserve Anonymously</label>
-    </div>
-    <input type="button" value="Reserve" class="selBtn" id="reserve">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <!-- Confirmation Popup -->
-    <div class="overlay" id="overlay"></div>
-    <div class="confirmation-popup" id="confirmation-popup">
-        <p>Are you sure you want to reserve the selected slots?</p>
-        <button class="confirm" id="confirm-reserve">Confirm</button>
-        <button class="cancel" id="cancel-reserve">Cancel</button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <a class="navbar-brand text-uppercase" href="#">
+                    <i class="bi bi-laptop" style="font-size: 2rem;"></i>
+                </a>
+                <ul class="navbar-nav text-uppercase">
+                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="handleViewLabs()">View Labs</a></li>
+                </ul>
+            </div>
+
+            <div class="d-lg-flex ms-auto">
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" aria-label="Search">
+                    <button class="btn btn-outline-primary text-uppercase" type="submit">Search</button>
+                </form>
+                
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="profile-link" onclick="handleProfile()">
+                            <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <br>
+    <br>
+    <br>
+        <h1 class="container-fluid">Reservation Page</h1>
+        <div id="selections">
+            <select name="labs" id="lab-selection">
+                <option value="" disabled selected>Select Lab</option>
+                <option value="turing">Turing Lab</option>
+                <option value="gosling">Gosling Lab</option>
+                <option value="lovelace">Lovelace Lab</option>
+            </select>
+            <input type="date" id="date-selection">
+        </div>
+        <div class="table-container">
+            <table id="table-availability">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="table-body-container">
+                <table>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="anonymous_checker" value="anonymous">
+            <label for="anonymous_checker">Reserve Anonymously</label>
+        </div>
+        <input type="button" value="Reserve" class="selBtn" id="reserve">
+
+        <!-- Confirmation Popup -->
+        <div class="overlay" id="overlay"></div>
+        <div class="confirmation-popup" id="confirmation-popup">
+            <p>Are you sure you want to reserve the selected slots?</p>
+            <button class="confirm" id="confirm-reserve">Confirm</button>
+            <button class="cancel" id="cancel-reserve">Cancel</button>
+        </div>
     </div>
 
     <script>
@@ -308,6 +348,22 @@
             confirmationPopup.style.display = 'none';
             overlay.style.display = 'none';
         });
+
+        function handleViewLabs() {
+            window.location.href = 'slots_page.html';
+        }
+
+        function handleProfile() {
+            window.location.href = 'profile.html';
+        }
+
+        function isLoggedIn() {
+            return localStorage.getItem('isLoggedIn') === 'true';
+        }
+
+        function profileView() {
+            window.location.href = "profile.html";
+        }
 
         labSelection.addEventListener('change', updateTable);
         dateSelection.addEventListener('change', updateTable);

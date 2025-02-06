@@ -248,19 +248,11 @@
     <script>
 
         function handleViewLabs() {
-            if(!isLoggedIn()) {
-                window.location.href = 'login.html';
-            } else {
-                window.location.href = 'slots_page.html';
-            }
+            window.location.href = 'slots_page.html';
         }
 
         function handleProfile() {
-            if(!isLoggedIn()) {
-                window.location.href = 'login.html';
-            } else {
-                window.location.href = 'profile.html';
-            }
+            window.location.href = 'profile.html';
         }
 
         function isLoggedIn() {
