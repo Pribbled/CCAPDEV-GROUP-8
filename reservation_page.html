@@ -235,6 +235,8 @@
         </div>
         <input type="button" value="Reserve" class="selBtn" id="reserve">
 
+        <button class="selBtn" onclick = "reservationLabTech()">Lab Tech's View of Reservation Page</button>
+
         <!-- Confirmation Popup -->
         <div class="overlay" id="overlay"></div>
         <div class="confirmation-popup" id="confirmation-popup">
@@ -369,6 +371,11 @@
         dateSelection.addEventListener('change', updateTable);
 
         updateTable();
+
+        function reservationLabTech() {
+            window.location.href = "reservation_page_labtech.html";
+        }
+
     </script>
 </body>
 </html>

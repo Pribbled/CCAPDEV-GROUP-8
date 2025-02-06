@@ -177,6 +177,31 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
+        .selBtn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #3498db;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .selBtn:hover {
+            background-color: #2980b9;
+        }
+
+        .selBtn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
 
         @media (max-width: 600px) {
             #selections {
@@ -260,6 +285,11 @@
         </div>
     </div>
 
+    <div class = "button-container">
+        <button class="selBtn" onclick = "reserveForStudent()">Make Reservation for Student</button>
+        <button class="selBtn" onclick = "slotsStudent()">Student's View of Slots Page</button>
+        </div>
+
     <!-- Confirmation Popup -->
     <div class="overlay" id="overlay"></div>
     <div class="confirmation-popup" id="confirmation-popup">
@@ -316,7 +346,7 @@
 
                     let reserveeName = slot.reservee;
                     if (slot.reservee !== 'None' && slot.reservee !== 'Anonymous') {
-                        reserveeName = `<a href="/user/${slot.reservee}" class="reservee-link">${slot.reservee}</a>`;
+                        reserveeName = `<a href="profile.html" class="reservee-link">${slot.reservee}</a>`; // Carlos: temporary link to profile.html
                     }
 
                     row.innerHTML = `
@@ -363,6 +393,15 @@
         labSelection.addEventListener('change', updateTable);
 
         updateTable();
+
+        function slotsStudent() {
+            window.location.href = "slots_page.html";
+        }
+
+        function reserveForStudent() {
+            window.location.href = "reservation_page_labtech.html";
+        }
     </script>
+
 </body>
 </html>

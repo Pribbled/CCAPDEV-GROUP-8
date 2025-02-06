@@ -237,6 +237,8 @@
     </div>
     <input type="button" value="Reserve" class="selBtn" id="reserve">
 
+    <button class="selBtn" onclick = "reservationStudent()">Student's View of Reservation Page</button>
+
     <!-- Confirmation Popup -->
     <div class="overlay" id="overlay"></div>
     <div class="confirmation-popup" id="confirmation-popup">
@@ -391,6 +393,10 @@
 
         updateUsers();
         updateTable();
+
+        function reservationStudent() {
+            window.location.href = "reservation_page.html";
+        }
     </script>
 </body>
 </html>
