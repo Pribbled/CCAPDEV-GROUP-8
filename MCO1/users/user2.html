@@ -1,0 +1,381 @@
+<head>
+    <title>
+        Profile
+    </title>
+
+    <style>
+        body {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        }
+        .profile-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            right: 22vw;
+        }
+        .profile-container {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            right: 1vw;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .profile-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+        .profile-container:hover .edit-icon {
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+        .edit-icon {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            display: none;
+            cursor: pointer;
+            object-fit: contain;
+            transform: scale(0.6);
+        }
+        .profile-container input {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+        .profile-container:hover {
+            opacity: 1;
+        }
+        .profile-container:hover input {
+            opacity: 1;
+        }
+        .profile-info {
+            margin-left: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+        .name {
+            font-size: 26px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .name-edit-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .name-edit-button-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+        .name-edit-button-icon:hover {
+            transform: scale(1.1);
+        }
+        .email {
+            font-size: 16px;
+            color: gray;
+        }
+        .background-divider {
+            position: fixed;
+            top: 25%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: gray;
+            z-index: -1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .reservations-title {
+            width: 80%;
+            max-width: 900px;
+            text-align: left;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            position: relative;
+            left: -10px;
+            color: rgba(0, 0, 0, 0.737);
+        }
+        .outer-container {
+            width: 80%;
+            max-width: 900px;
+            overflow-x: auto;
+            border-radius: 10px;
+            background: bisque;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            white-space: nowrap;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .reservations-space {
+            display: flex;
+            gap: 20px;
+        }
+        .reservation-box {
+            min-width: 250px;
+            min-height: 150px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            text-align: left;
+        }
+        .buttons-container {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .edit-button, .cancel-button {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .edit-button {
+            background-color: green;
+            color: white;
+        }
+        .cancel-button {
+            background-color: red;
+            color: white;
+        }
+        .scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+        }
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .edit-overlay {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            width: 300px;
+        }
+        .edit-overlay h2 {
+            margin-top: 0;
+        }
+        .edit-overlay label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .edit-overlay input, .edit-overlay select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .edit-overlay button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .edit-overlay button.confirm {
+            background-color: green;
+            color: white;
+        }
+        .edit-overlay button.cancel {
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class = "profile-wrapper">
+        <div class = "profile-container">
+            <img src = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg?20200418092106" alt = "Profile Picture">
+            <img class = "edit-icon" src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/150px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt = "Edit Icon">
+        </div>
+        <div class = "profile-info">
+            <div class = "name">Arturo Reyes
+                <button class = "name-edit-button">
+                    <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/150px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Edit Icon" class="name-edit-button-icon">
+                </button>
+            </div>
+            <div class = "email">arturo_reyes@dlsu.edu.ph</div>
+        </div>
+    </div>
+
+    <div class = "background-divider"></div>
+
+    <div class = "reservations-title">Reservations</div>
+
+    <div class = "outer-container">
+        <div class = "reservations-space">
+            <div class = "reservation-box">
+                <p><strong>Lab: </strong>Turing</p>
+                <p><strong>Date: </strong>02-03-2025</p>
+                <p><strong>Time: </strong>08:30 - 09:00</p>
+                <div class = "buttons-container">
+                    <button class = "edit-button">Edit</button>
+                    <button class = "cancel-button">Cancel</button>
+                </div>
+            </div>
+            <div class = "reservation-box">
+                <p><strong>Lab: </strong>Gosling</p>
+                <p><strong>Date: </strong>02-04-2025</p>
+                <p><strong>Time: </strong>11:00-12:30</p>
+                <div class = "buttons-container">
+                    <button class = "edit-button">Edit</button>
+                    <button class = "cancel-button">Cancel</button>
+                </div>
+            </div>
+            <div class = "reservation-box">
+                <p><strong>Lab: </strong>Lovelace</p>
+                <p><strong>Date: </strong>02-05-2025</p>
+                <p><strong>Time: </strong>09:30-10:30</p>
+                <div class = "buttons-container">
+                    <button class = "edit-button">Edit</button>
+                    <button class = "cancel-button">Cancel</button>
+                </div>
+            </div>
+            <div class = "reservation-box">
+                <p><strong>Lab: </strong>Gosling</p>
+                <p><strong>Date: </strong>02-06-2025</p>
+                <p><strong>Time: </strong>12:30-14:30</p>
+                <div class = "buttons-container">
+                    <button class = "edit-button">Edit</button>
+                    <button class = "cancel-button">Cancel</button>
+                </div>
+            </div>
+            <div class = "reservation-box">
+                <p><strong>Lab: </strong>Turing</p>
+                <p><strong>Date: </strong>02-07-2025</p>
+                <p><strong>Time: </strong>07:00-08:30</p>
+                <div class = "buttons-container">
+                    <button class = "edit-button">Edit</button>
+                    <button class = "cancel-button">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="edit-overlay" id="edit-overlay">
+        <h2>Edit Reservation</h2>
+        <label for="edit-lab">Lab:</label>
+        <select id="edit-lab">
+            <option value="Turing">Turing</option>
+            <option value="Lovelace">Lovelace</option>
+            <option value="Gosling">Gosling</option>
+        </select>
+        <label for="edit-date">Date:</label>
+        <input type="date" id="edit-date">
+        <label for="edit-time">Time:</label>
+        <input type="time" id="edit-time">
+        <button class="confirm" onclick="confirmEdit()">Confirm</button>
+        <button class="cancel" onclick="closeEditOverlay()">Cancel</button>
+    </div>
+
+    <button class="edit-button" onclick="logout()">Logout</button>
+
+    <script>
+
+        let selectedReservation = null;
+
+        function openEditOverlay(button) {
+            const reservationBox = button.closest('.reservation-box');
+            const lab = reservationBox.querySelector('p:nth-child(1)').textContent.replace('Lab: ', '');
+            const date = reservationBox.querySelector('p:nth-child(2)').textContent.replace('Date: ', '');
+            const time = reservationBox.querySelector('p:nth-child(3)').textContent.replace('Time: ', '');
+
+            // Set the current values in the overlay
+            document.getElementById('edit-lab').value = lab;
+            document.getElementById('edit-date').value = date;
+            document.getElementById('edit-time').value = time.split('-')[0]; // Set the start time
+
+            // Show the overlay
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('edit-overlay').style.display = 'block';
+
+            // Track the selected reservation
+            selectedReservation = reservationBox;
+        }
+
+        function closeEditOverlay() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('edit-overlay').style.display = 'none';
+            selectedReservation = null;
+        }
+
+        function confirmEdit() {
+            const newLab = document.getElementById('edit-lab').value;
+            const newDate = document.getElementById('edit-date').value;
+            const newTime = document.getElementById('edit-time').value;
+
+            if (selectedReservation) {
+                // Update the reservation information
+                selectedReservation.querySelector('p:nth-child(1)').textContent = `Lab: ${newLab}`;
+                selectedReservation.querySelector('p:nth-child(2)').textContent = `Date: ${newDate}`;
+                selectedReservation.querySelector('p:nth-child(3)').textContent = `Time: ${newTime}-${newTime + 1}:30`; // Adjust end time as needed
+
+                // Simulate checking if the new time slot is available
+                const isSlotAvailable = true; // Replace with actual availability check
+                if (isSlotAvailable) {
+                    alert('Reservation updated successfully!');
+                } else {
+                    alert('The selected time slot is not available.');
+                }
+            }
+
+            closeEditOverlay();
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
