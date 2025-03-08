@@ -1,0 +1,48 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const registerBtn = document.getElementById('registerBtn');
+
+    function validateEmail() {
+        const emailError = document.getElementById('emailError');
+        if (!email.value.endsWith('@dlsu.edu.ph')) {
+            emailError.textContent = 'Email must be a DLSU email.';
+            return false;
+        }
+        emailError.textContent = '';
+        return true;
+    }
+
+    function validatePassword() {
+        const passwordError = document.getElementById('passwordError');
+        const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+        if (!regex.test(password.value)) {
+            passwordError.textContent = 'Password must be at least 8 characters with a number, uppercase letter, and special character.';
+            return false;
+        }
+        passwordError.textContent = '';
+        return true;
+    }
+
+    function matchPasswords() {
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
+        if (password.value !== confirmPassword.value) {
+            confirmPasswordError.textContent = 'Passwords do not match.';
+            return false;
+        }
+        confirmPasswordError.textContent = '';
+        return true;
+    }
+
+    function validateForm() {
+        const isEmailValid = validateEmail();
+        const isPasswordValid = validatePassword();
+        const isMatch = matchPasswords();
+        registerBtn.disabled = !(isEmailValid && isPasswordValid && isMatch);
+    }
+
+    email.addEventListener('input', validateForm);
+    password.addEventListener('input', validateForm);
+    confirmPassword.addEventListener('input', validateForm);
+}); 
