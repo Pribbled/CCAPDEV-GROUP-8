@@ -1,0 +1,45 @@
+{{> header}}
+<br>
+<br>
+<br>
+<h1>Reservations for Today</h1>
+<div id="selections">
+    <select name="labs" id="lab-selection">
+        <option value="" disabled selected>Select Lab</option>
+        <option value="turing">Turing Lab</option>
+        <option value="gosling">Gosling Lab</option>
+        <option value="lovelace">Lovelace Lab</option>
+    </select>
+    <input type="time" id="time-selection">
+</div>
+<div class="table-container">
+    <table id="table-availability">
+        <thead>
+            <tr>
+                <th>Seats</th>
+                <th>Status</th>
+                <th>Reservee</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+    <div class="table-body-container">
+        <table>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="button-container">
+    <button class="selBtn" onclick="reserveForStudent()">Make Reservation for Student</button>
+    <button class="selBtn" onclick="slotsStudent()">Student's View of Slots Page</button>
+</div>
+
+<!-- Confirmation Popup -->
+<div class="overlay" id="overlay"></div>
+<div class="confirmation-popup" id="confirmation-popup">
+    <p>Are you sure you want to remove the selected slot?</p>
+    <button class="confirm" id="confirm-remove">Confirm</button>
+    <button class="cancel" id="cancel-remove">Cancel</button>
+</div>

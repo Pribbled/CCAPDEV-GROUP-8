@@ -13,7 +13,7 @@ server.engine('hbs', handlebars.engine({
 
 server.use(express.static('public'));
 
-const controllers = ['routes','reserve','reserveLab', 'login', 'register'];
+const controllers = ['routes','reserve','reserveLab', 'login', 'register', 'slots', 'slotsLab'];
 for(var i=0; i<controllers.length; i++){
     const model = require('./controllers/'+controllers[i]);
     model.add(server);

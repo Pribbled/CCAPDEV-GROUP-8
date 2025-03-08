@@ -9,3 +9,11 @@ function handleProfile() {
         window.location.href = '/profile';  // Redirect to profile page
     }
 }
+
+function handleReserve() {
+    window.location.href = '/reservationPage';
+}
+
+function handleViewLabs() {
+    window.location.href = '/slots';
+}
