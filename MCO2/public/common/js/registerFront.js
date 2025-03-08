@@ -45,4 +45,32 @@ document.addEventListener('DOMContentLoaded', function () {
     email.addEventListener('input', validateForm);
     password.addEventListener('input', validateForm);
     confirmPassword.addEventListener('input', validateForm);
+
+    // sending data to backend
+    const form = document.getElementById('registerForm');
+
+    form.addEventListener('submit', async function (event) {
+
+        const role = document.getElementById('role').value;
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        console.log("Sending request to /register with:", { role, firstName, lastName, email, password });
+
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role, firstName, lastName, email, password })
+            });
+
+            const result = await response.text();
+            console.log("Server Response:", result);
+            alert(result);
+        } catch (error) {
+            console.error("Error in fetch:", error);
+        }
+    });
 }); 
