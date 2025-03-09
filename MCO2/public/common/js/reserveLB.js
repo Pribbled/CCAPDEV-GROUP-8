@@ -80,9 +80,10 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
         overlay.style.display = 'none';
     });
 
+    function reservationLabTech() {
+        window.location.href = "/reservationPageLabtech";
+    }
 });
-
-document.getElementById("labtech").addEventListener("click", function () {
-    window.location.href = "/reservationPageLabtech"; 
+document.getElementById("student").addEventListener("click", function () {
+    window.location.href = "/reservationPage"; 
 });
-

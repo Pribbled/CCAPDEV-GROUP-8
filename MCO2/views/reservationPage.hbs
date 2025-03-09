@@ -1,10 +1,14 @@
+{{> header}}
+<br>
+<br>
+<br>
 <h1 class="container-fluid">Reservation Page</h1>
 <div id="selections">
     <select name="labs" id="lab-selection">
         <option value="" disabled selected>Select Lab</option>
-        <option value="Turing Lab">Turing Lab</option>
-        <option value="Gosling Lab">Gosling Lab</option>
-        <option value="Lovelace Lab">Lovelace Lab</option>
+        {{#each labs}}
+            <option value="{{name}}">{{name}}</option>
+        {{/each}}
     </select>
     <input type="date" id="date-selection">
     <input type="time" id="time-selection">
@@ -18,10 +22,26 @@
                 <th>Status</th>
             </tr>
         </thead>
-        <tbody id="table-body">
-
-        </tbody>
     </table>
+    <div class="table-body-container">
+        <table>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
 </div>
+<div class="checkbox-container">
+    <input type="checkbox" id="anonymous_checker" value="anonymous">
+    <label for="anonymous_checker">Reserve Anonymously</label>
+</div>
+<input type="button" value="Reserve" class="selBtn" id="reserve">
+<button class="selBtn" id="labtech">Lab Tech's View of Reservation Page</button>
 
+<!-- Confirmation Popup -->
+<div class="overlay" id="overlay"></div>
+<div class="confirmation-popup" id="confirmation-popup">
+    <p>Are you sure you want to reserve the selected slots?</p>
+    <button class="confirm" id="confirm-reserve">Confirm</button>
+    <button class="cancel" id="cancel-reserve">Cancel</button>
+</div>
 <script src="/common/js/reserveFront.js"></script>

@@ -10,12 +10,13 @@
     <input autocomplete="on" list="user-selection" id="users" placeholder="Enter reservee">
     <select name="labs" id="lab-selection">
         <option value="" disabled selected>Select Lab</option>
-        <option value="turing">Turing Lab</option>
-        <option value="gosling">Gosling Lab</option>
-        <option value="lovelace">Lovelace Lab</option>
+        {{#each labs}}
+            <option value="{{name}}">{{name}}</option>
+        {{/each}}
     </select>
     <input type="date" id="date-selection">
     <input type="time" id="time-selection">
+    <button id="fetch-seats">Check Availability</button>
 </div>
 <div class="table-container">
     <table id="table-availability">
@@ -38,7 +39,7 @@
 </div>
 <input type="button" value="Reserve" class="selBtn" id="reserve">
 
-<button class="selBtn" onclick = "reservationStudent()">Student's View of Reservation Page</button>
+<button class="selBtn" id="student">Student's View of Reservation Page</button>
 <!-- Confirmation Popup -->
 <div class="overlay" id="overlay"></div>
 <div class="confirmation-popup" id="confirmation-popup">
@@ -46,3 +47,4 @@
     <button class="confirm" id="confirm-reserve">Confirm</button>
     <button class="cancel" id="cancel-reserve">Cancel</button>
 </div>
+<script src="/common/js/reserveLB.js"></script>

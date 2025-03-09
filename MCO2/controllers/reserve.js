@@ -4,9 +4,11 @@ const Lab = require('../models/lab');
 function add(server) {
     server.get('/reservationPage', async function (req, res) {
         try {
+            const labs = await Lab.find().lean();
             res.render('reservationpage', {
                 layout: 'index',
                 title: 'Reserve a Slot',
+                labs : labs,
                 stylesheet: 'reservePage'
             });
         } catch (error) {
