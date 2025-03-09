@@ -2,8 +2,8 @@ const User = require("../models/User");
 const Reservation = require("../models/Reservation");
 
 function add(server) {
-    // Render student profile page
-    server.get('/profile/:id', async function (req, res) {
+    // Render visited profile page
+    server.get('/profileVisit/:id', async function (req, res) {
         try {
             const userId = req.params.id;
             const user = await User.findById(userId);
@@ -12,12 +12,12 @@ function add(server) {
                 return res.status(404).send("User not found");
             }
 
-            // Fetch reservations for the user
+            // Fetch last 5 reservations for the visited user
             const reservations = await Reservation.find({ userId }).limit(5);
 
-            res.render('profile', {
+            res.render('profileVisit', {
                 layout: 'index',
-                title: 'Student Profile',
+                title: 'Profile Visit',
                 name: user.name,
                 email: user.email,
                 profilePicture: user.profilePicture || "/common/default_pfp.jpg",
@@ -25,7 +25,7 @@ function add(server) {
             });
 
         } catch (error) {
-            console.error("Error loading profile:", error);
+            console.error("Error loading profile visit:", error);
             res.status(500).send("Internal Server Error");
         }
     });
