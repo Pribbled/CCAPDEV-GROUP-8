@@ -19,6 +19,9 @@ for(var i=0; i<controllers.length; i++){
     model.add(server);
 }
 
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/ccapdev').then(() => console.log('MongoDB connected')).catch(err => console.log(err));
+
 const port = process.env.PORT || 9090;
 server.listen(port, function(){
     console.log('Listening at port '+port);
