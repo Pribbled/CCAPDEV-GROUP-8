@@ -2,13 +2,14 @@
 <div id="selections">
     <select name="labs" id="lab-selection">
         <option value="" disabled selected>Select Lab</option>
-        <option value="turing">Turing Lab</option>
-        <option value="gosling">Gosling Lab</option>
-        <option value="lovelace">Lovelace Lab</option>
+        <option value="Turing Lab">Turing Lab</option>
+        <option value="Gosling Lab">Gosling Lab</option>
+        <option value="Lovelace Lab">Lovelace Lab</option>
     </select>
     <input type="date" id="date-selection">
+    <input type="time" id="time-selection">
+    <button id="fetch-seats">Check Availability</button>
 </div>
-
 <div class="table-container">
     <table id="table-availability">
         <thead>
@@ -17,19 +18,10 @@
                 <th>Status</th>
             </tr>
         </thead>
+        <tbody id="table-body">
+
+        </tbody>
     </table>
-    <div class="table-body-container">
-        <table>
-            <tbody id="table-body">
-                {{#each reservations}}
-                    {{#each seats}}
-                        <tr class="{{#if (eq status 'Reserved')}}reserved{{/if}}">
-                            <td>{{seatNumber}}</td>
-                            <td>{{status}}</td>
-                        </tr>
-                    {{/each}}
-                {{/each}}
-            </tbody>
-        </table>
-    </div>
 </div>
+
+<script src="/common/reserve.js"></script>
