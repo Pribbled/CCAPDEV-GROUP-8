@@ -25,19 +25,14 @@ function add(server) {
                 return res.status(400).json({ error: "Missing required query parameters." });
             }
 
-            console.log("🔍 Received Query:", { lab, date, startTime });
-
             const labDetails = await Lab.findOne({ name: lab }).lean();
             if (!labDetails) {
                 return res.status(404).json({ error: "Lab not found" });
             }
             const totalSeats = labDetails.totalSeats;
-            console.log("🏢 Total Seats in Lab:", totalSeats);
 
             const reservations = await Reservation.find({ lab, date, startTime }).lean();
             const reservedSeats = reservations.flatMap(reservation => reservation.seats.map(seat => seat.seatNumber));
-
-            console.log("🚫 Reserved Seats:", reservedSeats);
 
             const availableSeats = [];
             for (let i = 1; i <= totalSeats; i++) {
@@ -46,11 +41,9 @@ function add(server) {
                 }
             }
 
-            console.log("✅ Available Seats:", availableSeats);
-
             res.json(availableSeats);
         } catch (error) {
-            console.error("❌ Error fetching available seats:", error);
+            console.error("Error fetching available seats:", error);
             res.status(500).json({ error: "Internal Server Error" });
         }
     });

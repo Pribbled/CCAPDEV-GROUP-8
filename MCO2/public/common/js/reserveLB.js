@@ -52,7 +52,7 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
         });
 
     } catch (error) {
-        console.error("❌ Error fetching available seats:", error);
+        console.error("Error fetching available seats:", error);
         alert("Failed to load available seats.");
     }
 

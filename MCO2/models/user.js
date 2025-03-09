@@ -11,5 +11,6 @@ const userSchema = new mongoose.Schema({
     reservations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reservation" }] // References Reservation
 }, { timestamps: true });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.models.users || mongoose.model("users", userSchema);
+
 module.exports = User;

@@ -19,7 +19,6 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
     hours = hours % 12 || 12;
     let formattedHours = hours.toString().padStart(2, '0');
     let formattedTime = `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
-    console.log("⏰ Formatted Time:", formattedTime);
 
     try {
         const response = await fetch(`/api/seats?lab=${encodeURIComponent(lab)}&date=${encodeURIComponent(date)}&startTime=${encodeURIComponent(formattedTime)}`);
@@ -52,7 +51,7 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
         });
 
     } catch (error) {
-        console.error("❌ Error fetching available seats:", error);
+        console.error("Error fetching available seats:", error);
         alert("Failed to load available seats.");
     }
 

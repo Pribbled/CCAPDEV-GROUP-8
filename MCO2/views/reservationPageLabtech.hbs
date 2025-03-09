@@ -6,6 +6,9 @@
 <div id="selections">
     <datalist id="user-selection">
         <option value="" disabled selected>Search for User</option>
+        {{#each users}}
+            <option value="{{firstName}} {{lastName}}">{{firstName}} {{lastName}}</option>
+        {{/each}}
     </datalist>
     <input autocomplete="on" list="user-selection" id="users" placeholder="Enter reservee">
     <select name="labs" id="lab-selection">
