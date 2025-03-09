@@ -1,44 +1,35 @@
-{{> header}}
-<br>
-<br>
-<br>
-    <h1 class="container-fluid">Reservation Page</h1>
-    <div id="selections">
-        <select name="labs" id="lab-selection">
-            <option value="" disabled selected>Select Lab</option>
-            <option value="turing">Turing Lab</option>
-            <option value="gosling">Gosling Lab</option>
-            <option value="lovelace">Lovelace Lab</option>
-        </select>
-        <input type="date" id="date-selection">
-        <input type="time" id="time-selection">
-    </div>
-    <div class="table-container">
-        <table id="table-availability">
-            <thead>
-                <tr>
-                    <th>Seats</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
+<h1 class="container-fluid">Reservation Page</h1>
+<div id="selections">
+    <select name="labs" id="lab-selection">
+        <option value="" disabled selected>Select Lab</option>
+        <option value="turing">Turing Lab</option>
+        <option value="gosling">Gosling Lab</option>
+        <option value="lovelace">Lovelace Lab</option>
+    </select>
+    <input type="date" id="date-selection">
+</div>
+
+<div class="table-container">
+    <table id="table-availability">
+        <thead>
+            <tr>
+                <th>Seats</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+    </table>
+    <div class="table-body-container">
+        <table>
+            <tbody id="table-body">
+                {{#each reservations}}
+                    {{#each seats}}
+                        <tr class="{{#if (eq status 'Reserved')}}reserved{{/if}}">
+                            <td>{{seatNumber}}</td>
+                            <td>{{status}}</td>
+                        </tr>
+                    {{/each}}
+                {{/each}}
+            </tbody>
         </table>
-        <div class="table-body-container">
-            <table>
-                <tbody id="table-body"></tbody>
-            </table>
-        </div>
     </div>
-    <div class="checkbox-container">
-        <input type="checkbox" id="anonymous_checker" value="anonymous">
-        <label for="anonymous_checker">Reserve Anonymously</label>
-    </div>
-    <input type="button" value="Reserve" class="selBtn" id="reserve">
-        <button class="selBtn" onclick = "reservationLabTech()">Lab Tech's View of Reservation Page</button>
-        <!-- Confirmation Popup -->
-    <div class="overlay" id="overlay"></div>
-        <div class="confirmation-popup" id="confirmation-popup">
-            <p>Are you sure you want to reserve the selected slots?</p>
-            <button class="confirm" id="confirm-reserve">Confirm</button>
-            <button class="cancel" id="cancel-reserve">Cancel</button>
-        </div>
-    </div>
+</div>

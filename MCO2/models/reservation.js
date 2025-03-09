@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
 const reservationSchema = new mongoose.Schema({
-    lab: {type: String, required: true},
-    date: {type: Date, required: true},
-    startTime: {type: Date, required: true},
-    endTime: {type: Date, required: true},
-    seats: {type: Number, required: true},
-    name: {type: String, required: true},
-    requestDate: {type: Date, required: true}
+    lab: { type: mongoose.Schema.Types.ObjectId, ref: 'Lab', required: true },
+    date: { type: Date, required: true },
+    startTime: { type: String, required: true },
+    endTime: { type: String, required: true },
+    seats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Seat' }],
+    name: { type: String, required: true },
+    requestDate: { type: Date, default: Date.now },
+    isAnonymous: { type: Boolean, default: false }
 });
 
-module.exports = mongoose.model('reservation', reservationSchema);
+module.exports = mongoose.model('Reservation', reservationSchema);
