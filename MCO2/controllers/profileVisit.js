@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Reservation = require("../models/Reservation");
 
 function add(server) {
     // Render visited profile page
@@ -11,13 +12,16 @@ function add(server) {
                 return res.status(404).send("User not found");
             }
 
+            // Fetch last 5 reservations for the visited user
+            const reservations = await Reservation.find({ userId }).limit(5);
+
             res.render('profileVisit', {
                 layout: 'index',
                 title: 'Profile Visit',
                 name: user.name,
                 email: user.email,
                 profilePicture: user.profilePicture || "/common/default_pfp.jpg",
-                reservations: user.reservations
+                reservations: reservations
             });
 
         } catch (error) {
