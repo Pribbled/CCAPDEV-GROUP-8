@@ -1,12 +1,12 @@
 function isLoggedIn() {
-    return localStorage.getItem('isLoggedIn') === 'true'; // Check for "true"
+    return localStorage.getItem('isLoggedIn') === 'true'; 
 }
 
 function handleProfile() {
     if (!isLoggedIn()) {
-        window.location.href = '/login';  // Redirect to login page
+        window.location.href = '/login'; 
     } else {
-        window.location.href = '/profile';  // Redirect to profile page
+        window.location.href = '/profile'; 
     }
 }
 
