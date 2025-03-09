@@ -6,4 +6,6 @@ const labSchema = new mongoose.Schema({
     totalSeats: { type: Number, required: true }
 });
 
-module.exports = mongoose.model('Lab', labSchema);
+const Lab = mongoose.models.labs || mongoose.model('labs', labSchema);
+
+module.exports = Lab;

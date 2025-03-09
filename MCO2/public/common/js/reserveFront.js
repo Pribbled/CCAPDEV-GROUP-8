@@ -8,31 +8,40 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
         return;
     }
 
+    let [hours, minutes] = startTime.split(":").map(Number);
+    let period = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+    let formattedHours = hours.toString().padStart(2, '0');
+    let formattedTime = `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+    console.log("⏰ Formatted Time:", formattedTime);
+
     try {
-        const response = await fetch(`/api/reservations?lab=${encodeURIComponent(lab)}&date=${encodeURIComponent(date)}&startTime=${encodeURIComponent(startTime)}`);
-        const reservations = await response.json();
+        const response = await fetch(`/api/seats?lab=${encodeURIComponent(lab)}&date=${encodeURIComponent(date)}&startTime=${encodeURIComponent(formattedTime)}`);
+        const availableSeats = await response.json();
+        console.log(availableSeats);
 
         const tableBody = document.getElementById("table-body");
         tableBody.innerHTML = "";
 
-        if (reservations.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="2">No reservations found</td></tr>`;
+        if (availableSeats.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="2">No available seats</td></tr>`;
             return;
         }
 
-        reservations.forEach(reservation => {
-            reservation.seats.forEach(seat => {
-                const row = document.createElement("tr");
-                row.classList.add(seat.status === "Reserved" ? "reserved" : "available");
-                row.innerHTML = `
-                    <td>${seat.seatNumber}</td>
-                    <td>${seat.status}</td>
-                `;
-                tableBody.appendChild(row);
-            });
+        availableSeats.forEach(seat => {
+            const row = document.createElement("tr");
+            row.classList.add("available");
+            row.innerHTML = `
+                <tr>
+                <td>${seat.seatNumber}</td>
+                <td>${seat.status}</td>
+                </tr>
+            `;
+            tableBody.appendChild(row);
         });
+
     } catch (error) {
-        console.error("Error fetching reservations:", error);
-        alert("Failed to load reservations.");
+        console.error("❌ Error fetching available seats:", error);
+        alert("Failed to load available seats.");
     }
 });
