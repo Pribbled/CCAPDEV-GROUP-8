@@ -6,10 +6,12 @@
 <div id="selections">
     <select name="labs" id="lab-selection">
         <option value="" disabled selected>Select Lab</option>
-        <option value="turing">Turing Lab</option>
-        <option value="gosling">Gosling Lab</option>
-        <option value="lovelace">Lovelace Lab</option>
+        {{#each labs}}
+        <option value="{{name}}">{{name}}</option>
+        {{/each}}
     </select>
+    
+    <input type="date" id="date-selection">
     <input type="time" id="time-selection">
 </div>
 <div class="table-container">
@@ -32,8 +34,8 @@
 </div>
 
 <div class="button-container">
-    <button class="selBtn" onclick="reserveForStudent()">Make Reservation for Student</button>
-    <button class="selBtn" onclick="slotsStudent()">Student's View of Slots Page</button>
+    <button class="selBtn" id="reserve-slot">Make Reservation for Student</button>
+    <button class="selBtn" id="slotsBtn">Student's View of Slots Page</button>
 </div>
 
 <!-- Confirmation Popup -->
@@ -43,3 +45,4 @@
     <button class="confirm" id="confirm-remove">Confirm</button>
     <button class="cancel" id="cancel-remove">Cancel</button>
 </div>
+<script src="/common/js/slotsLab.js"></script>
