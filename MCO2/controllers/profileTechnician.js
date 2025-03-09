@@ -8,13 +8,12 @@ function add(server) {
             const userId = req.params.id;
             const user = await User.findById(userId);
 
-            // Ensure the user exists and is a technician
             if (!user || user.role !== "technician") {
                 return res.status(404).send("Technician not found");
             }
 
-            // Fetch all reservations for labs managed by this technician
-            const reservations = await Reservation.find({ labTechnicianId: userId }).sort({ date: -1 });
+            // Fetch walk-in reservations for the technician's lab
+            const reservations = await Reservation.find({ labTechnicianId: userId }).limit(5);
 
             res.render('technicianProfile', {
                 layout: 'index',
