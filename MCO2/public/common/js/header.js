@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // redirecting 
                     listItem.addEventListener("click", () => {
-                        window.location.href = `/profile`;
+                        window.location.href = `/profileVisit`;
                     });
 
                     searchResults.appendChild(listItem);
