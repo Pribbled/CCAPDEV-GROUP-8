@@ -9,7 +9,8 @@ function add(server){
         });
     });
 
-    // search query
+
+   // search query
     server.get('/search', async (req, res) => {
         try {
             const query = req.query.q;
@@ -22,7 +23,7 @@ function add(server){
                     { firstName: { $regex: query, $options: "i" } },
                     { lastName: { $regex: query, $options: "i" } }
                 ]
-            }).limit(5); // result limit
+            }, '_id firstName lastName') // Only return _id, firstName, and lastName
 
             res.json(users);
         } catch (error) {

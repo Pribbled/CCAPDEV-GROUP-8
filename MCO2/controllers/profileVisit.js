@@ -3,7 +3,7 @@ const Reservation = require("../models/reservation");
 
 function add(server) {
     // Render visited profile page
-    server.get('/profileVisit', async function (req, res) {
+    server.get('/profileVisit/:id', async function (req, res) {
         try {
             const userId = req.params.id;
             const user = await User.findById(userId);
@@ -18,9 +18,12 @@ function add(server) {
             res.render('profileVisit', {
                 layout: 'index',
                 title: 'Profile Visit',
-                name: user.name,
+                stylesheet: 'profileVisit',
+                firstName: user.firstName,
+                lastName: user.lastName,
+                role: user.role,
                 email: user.email,
-                profilePicture: user.profilePicture || "/common/default_pfp.jpg",
+                profilePicture: user.profilePicture || "/common/defaultPfp.jpg",
                 reservations: reservations
             });
 
