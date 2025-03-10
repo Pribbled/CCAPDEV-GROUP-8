@@ -12,8 +12,11 @@ function add(server) {
                 return res.status(404).send("User not found");
             }
 
-            // Fetch last 5 reservations for the visited user using their email (TEMPORARY FOR PHASE 2)
-            const reservations = await Reservation.find({ email: user.email }).limit(5).lean();
+            // Fetch last 5 non-anonymous reservations for the visited user using their email
+            const reservations = await Reservation.find({ 
+                email: user.email, 
+                isAnonymous: false 
+            }).limit(5).lean();
 
             res.render('profileVisit', {
                 layout: 'index',
