@@ -9,6 +9,11 @@ const handlebars = require('express-handlebars');
 server.set('view engine', 'hbs');
 server.engine('hbs', handlebars.engine({
     extname: 'hbs',
+    helpers: {
+        count: function (array) {
+            return array ? array.length : 0;
+        },
+    },
 }));
 
 server.use(express.static('public'));
