@@ -81,7 +81,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 statusCell.textContent = seatMap[i].status;
 
                 const reserveeCell = document.createElement("td");
-                reserveeCell.textContent = seatMap[i].reservee;
+
+                if (seatMap[i].status === "Reserved" && seatMap[i].reservee !== "Anonymous") {
+                    const profileLink = document.createElement("a");
+                    profileLink.href = `/profile`;
+                    profileLink.textContent = seatMap[i].reservee;
+                    profileLink.classList.add("reservee-link");
+                    reserveeCell.appendChild(profileLink);
+                } else {
+                    reserveeCell.textContent = seatMap[i].reservee;
+                }
+            
 
                 row.appendChild(seatCell);
                 row.appendChild(statusCell);

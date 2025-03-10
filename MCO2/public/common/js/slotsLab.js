@@ -69,7 +69,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 statusCell.textContent = "Reserved";
             
                 const reserveeCell = document.createElement("td");
-                reserveeCell.textContent = seat.reservee;
+                if (seat.reservee !== "Anonymous") {
+                    const profileLink = document.createElement("a");
+                    profileLink.href = `/profile`;
+                    profileLink.textContent = seat.reservee;
+                    profileLink.classList.add("reservee-link");
+                    reserveeCell.appendChild(profileLink);
+                } else {
+                    reserveeCell.textContent = seat.reservee;
+                }
             
                 const actionCell = document.createElement("td");
                 const removeButton = document.createElement("button");
