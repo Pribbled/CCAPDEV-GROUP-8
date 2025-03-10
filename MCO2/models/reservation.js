@@ -14,7 +14,8 @@ const reservationSchema = new mongoose.Schema({
     }],
     name: { type: String, required: true },
     isAnonymous: { type: Boolean, default: false },
-    requestDate: { type: String, default: today}
+    requestDate: { type: String, default: today},
+    email: { type: String, required: true } // This links the reservation to a user
 }, { timestamps: true });
 
 const Reservation = mongoose.models.reservations || mongoose.model('reservations', reservationSchema);
