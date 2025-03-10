@@ -18,6 +18,12 @@ function add(server) {
                 isAnonymous: false 
             }).limit(5).lean();
 
+            // Process reservations to include seat numbers
+            const processedReservations = reservations.map(reservation => ({
+                ...reservation,
+                seatNumbers: reservation.seats.map(seat => seat.seatNumber).join(", ")
+            }));
+
             res.render('profileVisit', {
                 layout: 'index',
                 title: 'Profile Visit',
@@ -27,7 +33,7 @@ function add(server) {
                 role: user.role,
                 email: user.email,
                 profilePicture: user.profilePicture || "/common/defaultPfp.jpg",
-                reservations: reservations
+                reservations: processedReservations
             });
 
         } catch (error) {
