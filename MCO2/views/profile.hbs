@@ -8,9 +8,16 @@
         </div>
         <div class="profile-info">
             <div class="name">{{name}}
-                <button class="name-edit-button">
+                <button class="name-edit-button" onclick="toggleNameInput()">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/150px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Edit Icon" class="name-edit-button-icon">
                 </button>
+            </div>
+            <div id="name-input" style="display: none;">
+                <form action="/profile/update-name" method="POST">
+                    <label for="name">Change Name:</label>
+                    <input type="text" id="name" name="name" value="{{name}}">
+                    <button type="submit">Update Name</button>
+                </form>
             </div>
             <div class="email">Student | {{email}}</div>
         </div>

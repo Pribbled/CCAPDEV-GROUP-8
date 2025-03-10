@@ -98,3 +98,22 @@ let selectedReservation = null;
                 document.body.removeChild(modal);
             });
         }
+        function toggleNameInput() {
+            const nameElement = document.querySelector('.name');
+            const currentName = nameElement.textContent.trim();
+        
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.value = currentName;
+            nameInput.className = 'name-input';
+        
+            nameInput.addEventListener('blur', () => {
+                nameElement.innerHTML = `${nameInput.value} <button class="name-edit-button" onclick="toggleNameInput()">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/150px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Edit Icon" class="name-edit-button-icon">
+                </button>`;
+            });
+        
+            nameElement.innerHTML = '';
+            nameElement.appendChild(nameInput);
+            nameInput.focus();
+        }
