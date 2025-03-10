@@ -1,5 +1,5 @@
 function handleProfile() {
-    window.location.href = '/profile'; 
+    window.location.href = '/login'; 
 }
 
 function handleReserve() {
