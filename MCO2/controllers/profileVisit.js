@@ -5,22 +5,23 @@ function add(server) {
     // Render visited profile page
     server.get('/profileVisit', async function (req, res) {
         try {
-            const userId = req.params.id;
-            const user = await User.findById(userId);
+            // const userId = req.params.id;
+            // const user = await User.findById(userId);
 
-            if (!user) {
-                return res.status(404).send("User not found");
-            }
+            // if (!user) {
+            //     return res.status(404).send("User not found");
+            // }
 
             // Fetch last 5 reservations for the visited user
-            const reservations = await Reservation.find({ userId }).limit(5);
+            const reservations = await Reservation.find().limit(5).lean();
 
             res.render('profileVisit', {
                 layout: 'index',
                 title: 'Profile Visit',
-                name: user.name,
-                email: user.email,
-                profilePicture: user.profilePicture || "/common/default_pfp.jpg",
+                stylesheet: 'profileVisit',
+                name: 'FirstName LastName', //user.name,
+                email: 'sample@example.com', //user.email,
+                profilePicture: "/common/default_pfp.jpg",
                 reservations: reservations
             });
 
