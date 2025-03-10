@@ -1,5 +1,5 @@
-const User = require("../models/User");
-const Reservation = require("../models/Reservation");
+const User = require("../models/user");
+const Reservation = require("../models/reservation");
 
 function add(server) {
     // Render visited profile page
