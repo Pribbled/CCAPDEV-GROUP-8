@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
     const labSelection = document.getElementById("lab-selection");
-    const dateSelection = document.getElementById("date-selection");
     const timeSelection = document.getElementById("time-selection");
     const reserveBtn = document.getElementById("reserve-slot");
     const slotsBtn = document.getElementById("slotsBtn");
@@ -14,9 +13,19 @@ document.addEventListener("DOMContentLoaded", function () {
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${period}`;
     }
 
+    function getTodayDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = (today.getMonth() + 1).toString().padStart(2, "0"); // Ensure two-digit format
+        const day = today.getDate().toString().padStart(2, "0"); // Ensure two-digit format
+        return `${year}-${month}-${day}`;
+    }
+    
+
     async function fetchReservations() {
         const lab = labSelection.value;
-        const date = dateSelection.value;
+        const date = getTodayDate();
+        console.log(date);
         const time = timeSelection.value;
         const formattedTime = formatTime(time);
 
@@ -43,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     reservationId: reservation.id
                 }))
             ).sort((a, b) => a.seatNumber - b.seatNumber); 
-            
+
             if (reservedSeats.length === 0) {
                 console.log("No reservations found.");
                 tableBody.innerHTML = "<tr><td colspan='4'>No reservations found.</td></tr>";
@@ -52,21 +61,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
             reservedSeats.forEach(seat => {
                 const row = document.createElement("tr");
-
+            
                 const seatCell = document.createElement("td");
                 seatCell.textContent = seat.seatNumber;
-
+            
                 const statusCell = document.createElement("td");
                 statusCell.textContent = "Reserved";
-
+            
                 const reserveeCell = document.createElement("td");
                 reserveeCell.textContent = seat.reservee;
-
+            
+                const actionCell = document.createElement("td");
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "Remove";
+                removeButton.classList.add("cancel-slot");
+                removeButton.onclick = function () {
+                    removeSlot(this, seat.reservationId);
+                };
+            
+                actionCell.appendChild(removeButton);
+                
                 row.appendChild(seatCell);
                 row.appendChild(statusCell);
                 row.appendChild(reserveeCell);
+                row.appendChild(actionCell);
+            
                 tableBody.appendChild(row);
             });
+            
 
         } catch (error) {
             console.error("Error fetching reservations:", error);
@@ -80,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "/slots";
     });
 
-    [labSelection, dateSelection, timeSelection].forEach(element => {
+    [labSelection, timeSelection].forEach(element => {
         element.addEventListener("change", fetchReservations);
     });
 
