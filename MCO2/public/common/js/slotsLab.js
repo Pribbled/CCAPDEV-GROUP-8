@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function getTodayDate() {
         const today = new Date();
         const year = today.getFullYear();
-        const month = (today.getMonth() + 1).toString().padStart(2, "0"); // Ensure two-digit format
-        const day = today.getDate().toString().padStart(2, "0"); // Ensure two-digit format
+        const month = (today.getMonth() + 1).toString().padStart(2, "0");
+        const day = today.getDate().toString().padStart(2, "0");
         return `${year}-${month}-${day}`;
     }
     
@@ -80,14 +80,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             
                 const actionCell = document.createElement("td");
-                const removeButton = document.createElement("button");
-                removeButton.textContent = "Remove";
-                removeButton.classList.add("cancel-slot");
-                removeButton.onclick = function () {
-                    removeSlot(this, seat.reservationId);
-                };
-            
-                actionCell.appendChild(removeButton);
+
+                const reservationTime = new Date(`${getTodayDate()}T${timeSelection.value}`);
+                const currentTime = new Date();
+                const timeDifference = (currentTime - reservationTime) / (1000 * 60);
+
+                if (timeDifference >= 10) {
+                    const removeButton = document.createElement("button");
+                    removeButton.textContent = "Remove";
+                    removeButton.classList.add("cancel-slot");
+                    removeButton.onclick = function () {
+                        removeSlot(this, seat.reservationId);
+                    };
+                    actionCell.appendChild(removeButton);
+                }
                 
                 row.appendChild(seatCell);
                 row.appendChild(statusCell);
