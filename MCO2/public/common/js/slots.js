@@ -38,61 +38,60 @@ document.addEventListener("DOMContentLoaded", function () {
         const time = timeSelection.value;
         const formattedTime = formatTime(time);
         const totalSeats = labData[lab];
-
+    
         if (!lab || !date || !formattedTime) {
             console.warn("Please select lab, date, and time.");
             return;
         }
-
+    
         console.log("Fetching reservations for:", { lab, date, formattedTime });
-
+    
         const url = `/api/reservations?lab=${encodeURIComponent(lab)}&date=${encodeURIComponent(date)}&startTime=${encodeURIComponent(formattedTime)}`;
-
+    
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
+    
             const reservations = await response.json();
             console.log("Received reservations:", reservations);
-
+    
             tableBody.innerHTML = ""; 
             
             let seatMap = {};
             for (let i = 1; i <= totalSeats; i++) {
                 seatMap[i] = { status: "Available", reservee: "None" };
             }
-
+    
             reservations.forEach(reservation => {
                 reservation.seats.forEach(seat => {
                     if (seatMap[seat.seatNumber]) {
                         seatMap[seat.seatNumber].status = "Reserved";
-                        seatMap[seat.seatNumber].reservee = reservation.isAnonymous ? "Anonymous" : reservation.name;
+                        seatMap[seat.seatNumber].reservee = reservation.isAnonymous ? "Anonymous" : { name: reservation.name, userId: reservation.userId || null };
                     }
                 });
             });
-
+    
             for (let i = 1; i <= totalSeats; i++) {
                 const row = document.createElement("tr");
-
+    
                 const seatCell = document.createElement("td");
                 seatCell.textContent = i;
-
+    
                 const statusCell = document.createElement("td");
                 statusCell.textContent = seatMap[i].status;
-
+    
                 const reserveeCell = document.createElement("td");
-
-                if (seatMap[i].status === "Reserved" && seatMap[i].reservee !== "Anonymous") {
+    
+                if (seatMap[i].status === "Reserved" && typeof seatMap[i].reservee === "object" && seatMap[i].reservee.userId) {
                     const profileLink = document.createElement("a");
-                    profileLink.href = `/profile`;
-                    profileLink.textContent = seatMap[i].reservee;
+                    profileLink.href = `/profileVisit/${seatMap[i].reservee.userId}`; 
+                    profileLink.textContent = seatMap[i].reservee.name; 
                     profileLink.classList.add("reservee-link");
                     reserveeCell.appendChild(profileLink);
                 } else {
-                    reserveeCell.textContent = seatMap[i].reservee;
+                    reserveeCell.textContent = typeof seatMap[i].reservee === "string" ? seatMap[i].reservee : "Anonymous";
                 }
-            
-
+    
                 row.appendChild(seatCell);
                 row.appendChild(statusCell);
                 row.appendChild(reserveeCell);
@@ -102,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Error fetching reservations:", error);
         }
     }
+    
 
     function updateDate(days) {
         if (!dateSelection.value) {

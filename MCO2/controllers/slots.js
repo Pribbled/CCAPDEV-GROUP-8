@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Reservation = require('../models/reservation'); 
 const Lab = require('../models/lab'); 
+const User = require('../models/user');
 
 function add(server) {
     server.get('/slots', async function(req, resp) {
@@ -27,10 +28,21 @@ function add(server) {
             if (!lab || !date || !startTime) {
                 return res.status(400).json({ error: "Missing required query parameters." });
             }
-
+    
             const filteredData = await Reservation.find({ lab, date, startTime }).lean();
     
-            res.json(filteredData);
+            // Find corresponding userId for each reservation based on email
+            const enhancedData = await Promise.all(filteredData.map(async (reservation) => {
+                if (!reservation.isAnonymous) {
+                    const user = await User.findOne({ email: reservation.email }).lean();
+                    if (user) {
+                        reservation.userId = user._id; // Attach the userId to the reservation
+                    }
+                }
+                return reservation;
+            }));
+    
+            res.json(enhancedData);
         } catch (error) {
             console.error("Error fetching reservations:", error);
             res.status(500).json({ error: "Internal Server Error" });
