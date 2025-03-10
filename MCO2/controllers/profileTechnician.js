@@ -2,25 +2,24 @@ const User = require("../models/user");
 const Reservation = require("../models/reservation");
 
 function add(server) {
-    // Render technician profile page
-    server.get('/technicianProfile/:id', async function (req, res) {
+    server.get('/profileTechnician', async function (req, res) {
         try {
-            const userId = req.params.id;
-            const user = await User.findById(userId);
+            // const userId = req.params.id;
+            // const user = await User.findById(userId);
 
-            if (!user || user.role !== "technician") {
-                return res.status(404).send("Technician not found");
-            }
+            // if (!user || user.role !== "technician") {
+            //     return res.status(404).send("Technician not found");
+            // }
 
             // Fetch walk-in reservations for the technician's lab
-            const reservations = await Reservation.find({ labTechnicianId: userId }).limit(5);
-
-            res.render('technicianProfile', {
+            const reservations = await Reservation.find().limit(5).lean();
+            res.render('profileTechnician', {
                 layout: 'index',
                 title: 'Technician Profile',
-                name: user.name,
-                email: user.email,
-                profilePicture: user.profilePicture || "/common/default_pfp.jpg",
+                stylesheet: 'profileTechnician',
+                name: 'FirstName LastName', //user.name,
+                email: 'sample@example.com', //user.email,
+                profilePicture: "/common/default_pfp.jpg",
                 reservations: reservations
             });
 

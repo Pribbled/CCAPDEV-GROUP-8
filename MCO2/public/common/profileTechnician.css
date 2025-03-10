@@ -4,7 +4,6 @@ body {
     flex-direction: column;
     font-family: Arial, sans-serif;
 }
-
 .profile-wrapper {
     margin-top: 80px;
     display: flex;
@@ -13,7 +12,6 @@ body {
     position: relative;
     right: 22vw;
 }
-
 .profile-container {
     width: 200px;
     height: 200px;
@@ -29,13 +27,43 @@ body {
     margin-bottom: 20px;
     cursor: pointer;
 }
-
+.profile-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+.profile-container:hover .edit-icon {
+    display: block;
+    transition: opacity 0.3s ease;
+}
+.edit-icon {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    display: none;
+    cursor: pointer;
+    object-fit: contain;
+    transform: scale(0.6);
+}
+.profile-container input {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+.profile-container:hover {
+    opacity: 1;
+}
+.profile-container:hover input {
+    opacity: 1;
+}
 .profile-info {
     margin-left: 5px;
     display: flex;
     flex-direction: column;
 }
-
 .name {
     font-size: 26px;
     font-weight: bold;
@@ -43,14 +71,175 @@ body {
     align-items: center;
     position: relative;
 }
-
+.name-edit-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.name-edit-button-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+.name-edit-button-icon:hover {
+    transform: scale(1.1);
+}
 .email {
     font-size: 16px;
     color: gray;
 }
+.background-divider {
+    position: absolute;
+    top: 36%;
+    left: 50%;
+    width: 100vw;
+    height: 1px;
+    background-color: gray;
+    z-index: -1;
+    transform: translateX(-50%);
+}
 
+.reservations-title {
+    width: 80%;
+    max-width: 900px;
+    text-align: left;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    position: relative;
+    left: -10px;
+    color: rgba(0, 0, 0, 0.737);
+}
+.outer-container {
+    width: 80%;
+    max-width: 900px;
+    overflow-x: auto;
+    border-radius: 10px;
+    background: rgb(70, 125, 209);
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    white-space: nowrap;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 25px;
+}
+.reservations-space {
+    display: flex;
+    gap: 20px;
+}
+.reservation-box {
+    min-width: 250px;
+    min-height: 150px;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    text-align: left;
+}
 .buttons-container {
     display: flex;
     gap: 5px;
     margin-top: 10px;
+}
+.edit-button, .cancel-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.edit-button {
+    background-color: rgb(0, 145, 255);
+    color: white;
+}
+
+.cancel-button {
+    background-color: rgb(48, 48, 48);
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: rgb(0, 25, 180);
+    transform: scale(1.05);
+}
+
+.cancel-button:hover {
+    background-color: rgb(70, 70, 70);
+    transform: scale(1.05);
+}
+
+.edit-button:active, .cancel-button:active {
+    transform: scale(0.95);
+}
+.scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+.edit-overlay {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    width: 300px;
+}
+.edit-overlay h2 {
+    margin-top: 0;
+}
+.edit-overlay label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.edit-overlay input, .edit-overlay select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.edit-overlay button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.edit-overlay button.confirm {
+    background-color: rgb(0, 145, 255);
+    color: white;
+}
+.edit-overlay button.cancel {
+    background-color: rgb(48, 48, 48);
+    color: white;
 }

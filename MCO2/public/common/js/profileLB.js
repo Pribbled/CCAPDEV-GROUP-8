@@ -8,7 +8,7 @@ let selectedReservation = null;
 
             document.getElementById('edit-lab').value = lab;
             document.getElementById('edit-date').value = date;
-            document.getElementById('edit-time').value = time.split('-')[0];
+            document.getElementById('edit-time').value = time.split('-')[0]; // Set the start time
 
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('edit-overlay').style.display = 'block';
@@ -30,9 +30,9 @@ let selectedReservation = null;
             if (selectedReservation) {
                 selectedReservation.querySelector('p:nth-child(1)').textContent = `Lab: ${newLab}`;
                 selectedReservation.querySelector('p:nth-child(2)').textContent = `Date: ${newDate}`;
-                selectedReservation.querySelector('p:nth-child(3)').textContent = `Time: ${newTime}-${newTime + 1}:30`;
+                selectedReservation.querySelector('p:nth-child(3)').textContent = `Time: ${newTime}-${newTime + 1}:30`; // Adjust end time as needed
 
-                const isSlotAvailable = true;
+                const isSlotAvailable = true; 
                 if (isSlotAvailable) {
                     alert('Reservation updated successfully!');
                 } else {
@@ -55,8 +55,12 @@ let selectedReservation = null;
             window.location.href = '/profile';
         }
 
-        function profileTechnician() {
-            window.location.href = "/profileTechnician";
+        function profileVisit() {
+            window.location.href = "/profileVisit";
+        }
+
+        function profileStudent() {
+            window.location.href = "/profile";
         }
 
         function deleteAccount() {
@@ -90,7 +94,7 @@ let selectedReservation = null;
         
 
             document.getElementById("confirmDelete").addEventListener("click", function () {
-                alert("Account deleted successfully."); // Replace this with actual delete logic
+                alert("Account deleted successfully.");
                 document.body.removeChild(modal);
             });
         

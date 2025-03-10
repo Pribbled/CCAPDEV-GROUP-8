@@ -3,7 +3,7 @@ const Reservation = require("../models/reservation");
 
 function add(server) {
     // Render visited profile page
-    server.get('/profileVisit/:id', async function (req, res) {
+    server.get('/profileVisit', async function (req, res) {
         try {
             const userId = req.params.id;
             const user = await User.findById(userId);
