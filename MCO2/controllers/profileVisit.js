@@ -5,15 +5,15 @@ function add(server) {
     // Render visited profile page
     server.get('/profileVisit/:id', async function (req, res) {
         try {
-            // const userId = req.params.id;
-            // const user = await User.findById(userId);
+            const userId = req.params.id;  // Get userId from the URL
+            const user = await User.findById(userId);  // Retrieve user from the database
 
-            // if (!user) {
-            //     return res.status(404).send("User not found");
-            // }
+            if (!user) {
+                return res.status(404).send("User not found");
+            }
 
             // Fetch last 5 reservations for the visited user
-            const reservations = await Reservation.find().limit(5).lean();
+            const reservations = await Reservation.find({ userId: userId }).limit(5).lean();
 
             res.render('profileVisit', {
                 layout: 'index',
