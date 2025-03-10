@@ -1,7 +1,3 @@
-function isLoggedIn() {
-    return localStorage.getItem('isLoggedIn') === 'true'; 
-}
-
 function handleProfile() {
     window.location.href = '/profile'; 
 }
