@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const bcrypt = require("bcrypt");
 
 function add(server){
     server.get('/register', function(req, resp){
@@ -21,8 +22,10 @@ function add(server){
                 return resp.status(400).send('Email already registered.');
             }
 
+            const hashedPassword = await bcrypt.hash(password, 10);
+
             // create and save
-            const newUser = new User({ role, firstName, lastName, email, password });
+            const newUser = new User({ role, firstName, lastName, email, password: hashedPassword });
             await newUser.save();
             console.log("User saved:", newUser);
 

@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const server = express();
 
 const bodyParser = require('body-parser');
@@ -45,8 +46,13 @@ async function seedData() {
         await Reservation.deleteMany({});
         await Lab.deleteMany({});
 
-        // Insert users into the database
-        await User.insertMany(users);
+        // Hash passwords before inserting users
+        const hashedUsers = await Promise.all(users.map(async (user) => {
+            user.password = await bcrypt.hash(user.password, 10);
+            return user;
+        }));
+
+        await User.insertMany(hashedUsers);
 
         // Insert reservations and link to users directly in the database
         for (const reservation of reservations) {
@@ -60,7 +66,7 @@ async function seedData() {
         // Insert labs into the database
         await Lab.insertMany(labs);
 
-        console.log('Database successfully seeded: Reservations linked to users.');
+        console.log('Database successfully seeded with linked reservations and hashed passwords');
     } catch (error) {
         console.error('Error seeding data:', error);
     }

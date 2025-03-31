@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const bcrypt = require('bcrypt');
 
 function add(server){
     server.get('/login', function(req, resp){
@@ -15,12 +16,12 @@ function add(server){
             const { email, password } = req.body;
     
             const user = await User.findOne({ email });
-    
-            if (!user || user.password !== password) {
+
+            if (!user || !(await bcrypt.compare(password, user.password))) {
                 return resp.status(401).json({ message: "Invalid email or password" });
             }
     
-            // Just send a success response
+            // IMPLEMENT SESSIONING HERE UPON LOGIN SUCCESS
             return resp.status(200).json({ message: "Login successful" });
     
         } catch (error) {
