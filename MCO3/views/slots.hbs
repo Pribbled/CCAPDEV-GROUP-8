@@ -1,0 +1,46 @@
+{{> header}}
+
+<body>
+    <br><br><br>
+    <h1>Lab Availability</h1>
+    <div id="selections">
+        <select name="labs" id="lab-selection">
+            <option value="" disabled selected>Select Lab</option>
+            {{#each labs}}
+            <option value="{{name}}">{{name}}</option>
+            {{/each}}
+        </select>
+
+        <input type="date" id="date-selection">
+        <input type="time" id="time-selection">
+    </div>
+
+    <div class="table-container">
+        <table id="table-availability">
+            <thead>
+                <tr>
+                    <th>Seat</th>
+                    <th>Status</th>
+                    <th>Reservee</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="table-body-container">
+            <table>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <input type="button" value="Previous Day" class="selBtn" id="prev-day">
+        <input type="button" value="Reserve a Slot" class="selBtn" id="reserve-slot">
+        <input type="button" value="Next Day" class="selBtn" id="next-day">
+    </div>
+
+    <div class="button-container">
+        <button class="selBtn" id="techBtn">Technician's View of Slots Page</button>
+    </div>
+</body>
+<script src="/common/js/slots.js"></script>

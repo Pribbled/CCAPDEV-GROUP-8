@@ -1,0 +1,47 @@
+[
+  {
+      "role": "Student",
+      "firstName": "Juan",
+      "lastName": "Dela Cruz",
+      "email": "juan.delacruz@example.com",
+      "password": "hashedpassword123",
+      "session": "2025-04-01T00:00:00.000Z",
+      "reservations": []
+  },
+  {
+      "role": "Student",
+      "firstName": "Arturo",
+      "lastName": "Reyes",
+      "email": "arturo.reyes@example.com",
+      "password": "hashedpassword123",
+      "session": "2025-04-01T00:00:00.000Z",
+      "reservations": []
+  },
+  {
+      "role": "Student",
+      "firstName": "Bayani",
+      "lastName": "Ramos",
+      "email": "bayani.ramos@example.com",
+      "password": "hashedpassword123",
+      "session": "2025-04-01T00:00:00.000Z",
+      "reservations": []
+  },
+  {
+      "role": "Student",
+      "firstName": "Agustin",
+      "lastName": "Garcia",
+      "email": "agustin.garcia@example.com",
+      "password": "hashedpassword123",
+      "session": "2025-04-01T00:00:00.000Z",
+      "reservations": []
+  },
+  {
+      "role": "Student",
+      "firstName": "Crisanto",
+      "lastName": "Mendoza",
+      "email": "crisanto.mendoza@example.com",
+      "password": "hashedpassword123",
+      "session": "2025-04-01T00:00:00.000Z",
+      "reservations": []
+  }
+]

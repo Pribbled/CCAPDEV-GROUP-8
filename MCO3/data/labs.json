@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Gosling Lab",
+        "location": "Gokongwei Building",
+        "totalSeats": 30
+    },
+    {
+        "name": "Turing Lab",
+        "location": "Gokongwei Building",
+        "totalSeats": 30
+    },
+    {
+        "name": "Lovelace Lab",
+        "location": "Gokongwei Building",
+        "totalSeats": 30
+    }
+]

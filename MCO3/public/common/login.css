@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.hero-section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.hero-text {
+    padding: 2rem;
+}
+
+.hero-img {
+    width: 60%;
+}
+
+.login-form {
+    max-width: 400px;
+    width: 100%;
+}
