@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 alert("Login successful! Redirecting...");
-                window.location.href = "/"; // Redirect after login
+                window.location.href = "/";
             } else {
                 alert(data.message || "Invalid login credentials");
             }

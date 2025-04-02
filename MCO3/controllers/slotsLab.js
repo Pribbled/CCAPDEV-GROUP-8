@@ -42,6 +42,23 @@ function add(server) {
         }
     });
 
+    server.delete('/api/reservations/:id', async (req, res) => {
+        try {
+            const { id } = req.params;
+    
+            const reservation = await Reservation.findById(id);
+            if (!reservation) {
+                return res.status(404).json({ error: "Reservation not found." });
+            }
+    
+            await Reservation.findByIdAndDelete(id);
+            res.json({ message: "Reservation removed successfully." });
+        } catch (error) {
+            console.error("Error removing reservation:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    });
+
 }
 
 module.exports.add = add; 

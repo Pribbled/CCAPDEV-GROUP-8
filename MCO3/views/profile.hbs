@@ -30,11 +30,11 @@
 <div class="outer-container">
     <div class="reservations-space">
         {{#each reservations}}
-        <div class="reservation-box">
+        <div class="reservation-box" data-reservation-id="{{_id}}">
             <p><strong>Lab: </strong>{{lab}}</p>
             <p><strong>Date: </strong>{{date}}</p>
             <p><strong>Time: </strong>{{startTime}}</p>
-            <p><strong>Seats: </strong>{{count seats}}</p>
+            <p><strong>Seat Numbers Reserved: </strong>{{seatNumbers}}</p>
             <p><strong>Requested: </strong>{{requestDate}}</p>
             <div class="buttons-container">
                 <button class="edit-button" onclick="openEditOverlay(this)">Edit</button>
@@ -50,9 +50,9 @@
     <h2>Edit Reservation</h2>
     <label for="edit-lab">Lab:</label>
     <select id="edit-lab">
-        <option value="Turing">Turing</option>
-        <option value="Lovelace">Lovelace</option>
-        <option value="Gosling">Gosling</option>
+        {{#each labs}}
+            <option value="{{this.name}}">{{this.name}}</option>
+        {{/each}}
     </select>
     <label for="edit-date">Date:</label>
     <input type="date" id="edit-date">
@@ -60,6 +60,8 @@
     <input type="time" id="edit-time">
     <label for="edit-seats">Seats:</label>
     <input type="text" id="edit-seats">
+    <label for="edit-anonymous">Make Anonymous:</label>
+    <input type="checkbox" id="edit-anonymous">
     <button class="confirm" onclick="confirmEdit()">Confirm</button>
     <button class="cancel" onclick="closeEditOverlay()">Cancel</button>
 </div>

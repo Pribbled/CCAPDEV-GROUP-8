@@ -1,47 +1,77 @@
-let selectedReservation = null;
+    let selectedReservationId = null;
 
-        function openEditOverlay(button) {
-            const reservationBox = button.closest('.reservation-box');
-            const lab = reservationBox.querySelector('p:nth-child(1)').textContent.replace('Lab: ', '');
-            const date = reservationBox.querySelector('p:nth-child(2)').textContent.replace('Date: ', '');
-            const time = reservationBox.querySelector('p:nth-child(3)').textContent.replace('Time: ', '');
+    function openEditOverlay(button) {
+        const reservationBox = button.closest('.reservation-box');
+        selectedReservationId = reservationBox.getAttribute('data-reservation-id');
+        console.log(selectedReservationId);
+        const lab = reservationBox.querySelector('p:nth-child(1)').textContent.replace('Lab: ', '');
+        const date = reservationBox.querySelector('p:nth-child(2)').textContent.replace('Date: ', '');
+        const time = reservationBox.querySelector('p:nth-child(3)').textContent.replace('Time: ', '');
+        const seats = reservationBox.querySelector('p:nth-child(4)').textContent.replace('Seat Numbers Reserved: ', '');
 
-            document.getElementById('edit-lab').value = lab;
-            document.getElementById('edit-date').value = date;
-            document.getElementById('edit-time').value = time.split('-')[0];
+        document.getElementById('edit-lab').value = lab;
+        document.getElementById('edit-date').value = date;
+        document.getElementById('edit-time').value = time.split('-')[0];
+        document.getElementById('edit-seats').value = seats;
 
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('edit-overlay').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('edit-overlay').style.display = 'block';
+    }
 
-            selectedReservation = reservationBox;
+    function closeEditOverlay() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('edit-overlay').style.display = 'none';
+        selectedReservationId = null;
+    }
+
+    async function confirmEdit() {
+        const newLab = document.getElementById('edit-lab').value;
+        const newDate = document.getElementById('edit-date').value;
+        const newTime = document.getElementById('edit-time').value;
+        const newSeats = document.getElementById('edit-seats').value.split(',').map(s => parseInt(s.trim()));
+        const isAnonymous = document.getElementById('edit-anonymous').checked;
+
+        if (!selectedReservationId) {
+            alert("No reservation selected.");
+            return;
         }
 
-        function closeEditOverlay() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('edit-overlay').style.display = 'none';
-            selectedReservation = null;
-        }
+        try {
+            const response = await fetch('/profile/edit-reservation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    reservationId: selectedReservationId,
+                    lab: newLab,
+                    date: newDate,
+                    startTime: newTime,
+                    seats: newSeats,
+                    isAnonymous: isAnonymous
+                })
+            });
 
-        function confirmEdit() {
-            const newLab = document.getElementById('edit-lab').value;
-            const newDate = document.getElementById('edit-date').value;
-            const newTime = document.getElementById('edit-time').value;
-
-            if (selectedReservation) {
-                selectedReservation.querySelector('p:nth-child(1)').textContent = `Lab: ${newLab}`;
-                selectedReservation.querySelector('p:nth-child(2)').textContent = `Date: ${newDate}`;
-                selectedReservation.querySelector('p:nth-child(3)').textContent = `Time: ${newTime}-${newTime + 1}:30`;
-
-                const isSlotAvailable = true;
-                if (isSlotAvailable) {
-                    alert('Reservation updated successfully!');
-                } else {
-                    alert('The selected time slot is not available.');
-                }
+            const text = await response.text();
+            try {
+                var result = JSON.parse(text);
+            } catch (error) {
+                console.error("Invalid JSON response:", text);
+                alert("Unexpected server response.");
+                return;
             }
 
-            closeEditOverlay();
+            if (response.ok) {
+                alert("Reservation updated successfully!");
+                window.location.reload();
+            } else {
+                alert(result.error || "Error updating reservation.");
+            }
+        } catch (error) {
+            console.error("Error updating reservation:", error);
+            alert("Failed to update reservation.");
         }
+        
+        closeEditOverlay();
+    }
 
         function logout() {
             fetch('/logout', {

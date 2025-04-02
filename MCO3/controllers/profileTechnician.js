@@ -4,18 +4,18 @@ const Reservation = require("../models/reservation");
 function add(server) {
     server.get('/profileTechnician', async function (req, res) {
         try {
-            // const userId = req.params.id;
-            // const user = await User.findById(userId);
-
-            // if (!user || user.role !== "technician") {
-            //     return res.status(404).send("Technician not found");
-            // }
-
             // Fetch walk-in reservations for the technician's lab
             if(!req.session.user) {
                 return res.redirect('/login');
             }
+            const userId = req.params.id;
+            const user = await User.findById(userId);
 
+            if (!user || user.role !== "technician") {
+                return res.status(404).send("Technician not found");
+            }
+
+            
             const {name, email, role} = req.session.user;
 
 
