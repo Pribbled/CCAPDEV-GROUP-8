@@ -50,7 +50,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('registerForm');
 
     form.addEventListener('submit', async function (event) {
-
+        event.preventDefault();
+        
         const role = document.getElementById('role').value;
         const firstName = document.getElementById('firstName').value;
         const lastName = document.getElementById('lastName').value;
