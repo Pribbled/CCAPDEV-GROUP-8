@@ -76,6 +76,18 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
             return;
         }
 
+        async function getSessionUser() {
+            try {
+                const response = await fetch('/get-session');
+                if (!response.ok) throw new Error("Not logged in");
+        
+                return await response.json();
+            } catch (error) {
+                console.error("Error fetching session data:", error);
+                return { name: "Guest", email: "" };
+            }
+        }
+
         function formatTime(hours, minutes) {
             let period = hours >= 12 ? "PM" : "AM";
             hours = hours % 12 || 12;
@@ -92,9 +104,11 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
             endMinutes -= 60;
         }
         const formattedEndTime = formatTime(endHours, endMinutes);
-    
-        const userEmail = req.session.user.email; //SESSION EMAIL
-        const userName = isAnonymous ? "Anonymous" : req.session.user.name; //SESSION NAME
+
+        const user = await getSessionUser();
+
+        const userEmail = user.email; //SESSION EMAIL
+        const userName = isAnonymous ? "Anonymous" : user.name; //SESSION NAME
     
         const reservationData = {
             lab,
@@ -148,7 +162,7 @@ document.getElementById("time-selection").addEventListener("change", function ()
 });
 
 
-document.getElementById("labtech").addEventListener("click", function () {
-    window.location.href = "/reservationPageLabtech"; 
-});
+// document.getElementById("labtech").addEventListener("click", function () {
+//     window.location.href = "/reservationPageLabtech"; 
+// });
 

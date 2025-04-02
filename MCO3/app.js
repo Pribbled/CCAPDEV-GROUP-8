@@ -93,6 +93,14 @@ server.get('/logout', function(req, resp) {
     });
 });
 
+server.get('/get-session', (req, res) => {
+    if (req.session.user) {
+        res.json(req.session.user);
+    } else {
+        res.status(401).json({ message: 'No session found' });
+    }
+});
+
 const port = process.env.PORT || 3000;
 server.listen(port, function () {
     console.log('Listening at port ' + port);
