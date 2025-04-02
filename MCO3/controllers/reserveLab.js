@@ -1,10 +1,14 @@
 const Reservation = require('../models/reservation');
 const Lab = require('../models/lab');
-const User = require('../models/user')
+const User = require('../models/user');
 
 function add(server) {
     server.get('/reservationPageLabtech', async function (req, resp) {
         try {
+
+            if(!req.session.user) {
+                return resp.redirect('/login');
+            }
             const labs = await Lab.find().lean();
             const users = await User.find().lean();
             resp.render('reservationPageLabtech',{

@@ -6,15 +6,31 @@ const User = require('../models/user');
 function add(server) {
     server.get('/slots', async function(req, resp) {
         try {
+
+            if(!req.session.user) {
+                return resp.redirect('/login');
+            }
+            const {name, email, role} = req.session.user;
+
             const labs = await Lab.find().lean(); 
             const reservations = await Reservation.find().lean(); 
-            resp.render('slots', {
-                layout: 'index',
-                title: 'Slot Availability',
-                stylesheet: 'slots',
-                labs: labs, 
-                reservations: reservations 
-            });
+            if(role === 'Student') {
+                resp.render('slots', {
+                    layout: 'index',
+                    title: 'Slot Availability',
+                    stylesheet: 'slots',
+                    labs: labs, 
+                    reservations: reservations 
+                });
+            } else {
+                resp.render('slotsLab', {
+                    layout: 'index',
+                    title: 'Reservation for Today',
+                    stylesheet: 'slotsLab',
+                    labs: labs, 
+                    reservations: reservations 
+                });
+            }
         } catch (error) {
             console.error('Error loading data:', error);
             resp.status(500).send('Internal Server Error');

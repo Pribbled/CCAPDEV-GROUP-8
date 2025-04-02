@@ -20,10 +20,16 @@ function add(server){
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 return resp.status(401).json({ message: "Invalid email or password" });
             }
-    
-            // IMPLEMENT SESSIONING HERE UPON LOGIN SUCCESS
+
+            req.session.user = {
+                name: user.firstName + " " + user.lastName,
+                email: user.email,
+                role: user.role
+            };
+
+            console.log("Session created:", req.session.user);
+
             return resp.status(200).json({ message: "Login successful" });
-    
         } catch (error) {
             console.error("Login error:", error);
             resp.status(500).json({ message: "Internal Server Error" });

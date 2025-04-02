@@ -1,16 +1,36 @@
 const Reservation = require('../models/reservation');
 const Lab = require('../models/lab');
+const User = require('../models/user');
 
 function add(server) {
     server.get('/reservationPage', async function (req, res) {
+        if(!req.session.user) {
+            return res.redirect('/login');
+        }
+        
         try {
+
+            const {name, email, role} = req.session.user;
+
             const labs = await Lab.find().lean();
-            res.render('reservationpage', {
-                layout: 'index',
-                title: 'Reserve a Slot',
-                labs : labs,
-                stylesheet: 'reservePage'
-            });
+            const users = await User.find().lean();
+            
+            if(role === 'Student') {
+                res.render('reservationpage', {
+                    layout: 'index',
+                    title: 'Reserve a Slot',
+                    labs : labs,
+                    stylesheet: 'reservePage'
+                });
+            } else {
+                res.render('reservationPageLabtech',{
+                    layout: 'index',
+                    title: 'Reserve a Slot',
+                    labs: labs,
+                    users: users,
+                    stylesheet: 'reservePageLabtech'
+                });
+            }
         } catch (error) {
             console.error("Error rendering reservation page:", error);
             res.status(500).send("Internal Server Error");

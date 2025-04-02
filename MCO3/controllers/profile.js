@@ -6,6 +6,9 @@ function add(server) {
     // Render student profile page
     server.get('/profile', async function (req, res) {
         try {
+            if(!req.session.user) {
+                return res.redirect('/login');
+            }
             const userId = req.params.id;
             const user = await User.findById(userId);
 
@@ -23,16 +26,32 @@ function add(server) {
                 seatNumbers: reservation.seats.map(seat => seat.seatNumber).join(", ")
             }));
 
-            res.render('profile', {
-                layout: 'index',
-                title: 'My Profile',
-                stylesheet: 'profile',
-                name: `${user.firstName} ${user.lastName}`,
-                email: user.email,
-                profilePicture: "/common/default_pfp.jpg",
-                reservations: processedReservations,
-                labs
-            });
+            // Fetch reservations for the user
+
+
+            const {name, email, role} = req.session.user;
+
+            if(role === 'Student') {
+                res.render('profile', {
+                    layout: 'index',
+                    title: 'Student Profile',
+                    stylesheet: 'profile',
+                    name: name,
+                    email: email, //user.email,
+                    profilePicture: "/common/default_pfp.jpg",
+                    reservations: reservations
+                });
+            } else {
+                res.render('profileTechnician', {
+                    layout: 'index',
+                    title: 'Technician Profile',
+                    stylesheet: 'profileTechnician',
+                    name: name, //user.name,
+                    email: email, //user.email,
+                    profilePicture: "/common/default_pfp.jpg",
+                    reservations: reservations
+                });    
+            }
 
         } catch (error) {
             console.error("Error loading profile:", error);

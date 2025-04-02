@@ -5,6 +5,11 @@ const Lab = require('../models/lab');
 function add(server) {
     server.get('/slotsLab', async function(req, resp) {
         try {
+
+            if(!req.session.user) {
+                return resp.redirect('/login');
+            }
+
             const labs = await Lab.find().lean(); 
             const reservations = await Reservation.find().lean(); 
             resp.render('slotsLab', {

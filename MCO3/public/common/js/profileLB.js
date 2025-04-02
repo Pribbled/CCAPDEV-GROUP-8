@@ -44,7 +44,16 @@ let selectedReservation = null;
         }
 
         function logout() {
-            window.location.href = '/';
+            fetch('/logout', {
+                method: 'GET',
+                credentials: 'same-origin' 
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message); 
+                window.location.href = '/'; 
+            })
+            .catch(error => console.error('Logout error:', error));
         }
 
         function handleViewLabs() {
