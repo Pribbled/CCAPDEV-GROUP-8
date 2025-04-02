@@ -35,7 +35,7 @@ function add(server) {
                     stylesheet: 'profile',
                     name: name,
                     email: email,
-                    profilePicture: profilePicture || "/common/default_pfp.jpg",
+                    profilePicture: profilePicture || "/common/defaultPfp.jpg",
                     reservations: reservations,
                     labs: labs,
                 });
@@ -46,7 +46,7 @@ function add(server) {
                     stylesheet: 'profileTechnician',
                     name: name,
                     email: email,
-                    profilePicture: profilePicture || "/common/default_pfp.jpg",
+                    profilePicture: profilePicture || "/common/defaultPfp.jpg",
                     reservations: reservations
                 });    
             }
@@ -152,6 +152,7 @@ function add(server) {
         }
     });
 
+    // Update profile pic
     server.post('/profile/update-picture', async (req, res) => {
         try {
             if (!req.session.user) {
@@ -186,6 +187,26 @@ function add(server) {
             res.status(200).json({ message: 'Profile picture updated successfully' });
         } catch (error) {
             console.error("Error updating profile picture:", error);
+            res.status(500).send("Internal Server Error");
+        }
+    });
+
+     // Update name
+     server.post('/profile/update-name', async (req, res) => {
+        try {
+            const { firstName, lastName } = req.body;
+            const user = await User.findByIdAndUpdate(
+                req.session.user._id,
+                { firstName, lastName },
+                { new: true }
+            );
+
+            req.session.user.firstName = firstName;
+            req.session.user.lastName = lastName;
+
+            res.redirect('/profile');
+        } catch (error) {
+            console.error("Error updating name:", error);
             res.status(500).send("Internal Server Error");
         }
     });

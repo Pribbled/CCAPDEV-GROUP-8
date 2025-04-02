@@ -3,7 +3,7 @@
 <div class="profile-section">
     <div class="profile-wrapper">
        <div class="profile-container">
-            <img src="{{profilePicture}}" alt="Profile Picture">
+            <img src="{{profilePicture}}"alt="Profile Picture">
             <img class="edit-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/150px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Edit Icon" onclick="openProfilePictureOverlay()">
         </div>
 
@@ -25,15 +25,22 @@
             </div>
             <div id="name-input" style="display: none;">
                 <form action="/profile/update-name" method="POST">
-                    <label for="first-name">First Name:</label>
-                    <input type="text" id="first-name" name="firstName" value="{{firstName}}">
-                    <label for="last-name">Last Name:</label>
-                    <input type="text" id="last-name" name="lastName" value="{{lastName}}">
+                    <div class="name-input-fields">
+                        <div>
+                            <label for="first-name">First Name:</label>
+                            <input type="text" id="first-name" name="firstName" value="{{firstName}}">
+                        </div>
+                        <div>
+                            <label for="last-name">Last Name:</label>
+                            <input type="text" id="last-name" name="lastName" value="{{lastName}}">
+                        </div>
+                    </div>
                     <button type="submit">Update Name</button>
                 </form>
             </div>
             <div class="email">Student | {{email}}</div>
         </div>
+
     </div>
     <div class="background-divider"></div>
 </div>
