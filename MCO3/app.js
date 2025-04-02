@@ -72,7 +72,7 @@ async function seedData() {
     }
 }
 
-seedData();  // Comment this out to remove auto-seeding
+// seedData();  // Comment this out to remove auto-seeding
 // AUTOMATIC SEEDING
 
 const port = process.env.PORT || 3000;

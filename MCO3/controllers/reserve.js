@@ -47,25 +47,35 @@ function add(server) {
             res.status(500).json({ error: "Internal Server Error" });
         }
     });
-    
-    // crud
-    server.get('/reservation-manage', async (req, res) => {
-        try {
-            const labs = await Lab.find().lean();
-            const reservations = await Reservation.find().lean();
 
-            res.render('reservation-manage', {
-                layout: 'index',
-                title: 'Manage Reservations',
-                labs: labs,
-                reservations: reservations,
-                stylesheet: 'reservePage'
+    server.post('/reservationPage', async function (req, res) {
+        try {
+            console.log("Received Reservation Data:", req.body);
+    
+            const { lab, date, startTime, endTime, seats, name, isAnonymous, email } = req.body;
+    
+            if (!lab || !date || !startTime || !endTime || !seats || !email) {
+                return res.status(400).json({ error: "Missing required fields." });
+            }
+    
+            const newReservation = new Reservation({
+                lab,
+                date,
+                startTime,
+                endTime,
+                seats,
+                name,
+                isAnonymous,
+                email
             });
-        } catch (error) {
-            console.error("Error:", error);
-            res.status(500).send("Internal Server Error");
+    
+            await newReservation.save();
+            res.status(201).json({ message: "Reservation successful!", reservation: newReservation });
+        } catch (err) {
+            console.error("Error saving reservation:", err);
+            res.status(500).json({ error: "Internal Server Error" });
         }
-  });
+    });
 }
 
 module.exports.add = add;

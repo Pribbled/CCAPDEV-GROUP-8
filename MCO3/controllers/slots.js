@@ -31,12 +31,11 @@ function add(server) {
     
             const filteredData = await Reservation.find({ lab, date, startTime }).lean();
     
-            // Find corresponding userId for each reservation based on email
             const enhancedData = await Promise.all(filteredData.map(async (reservation) => {
                 if (!reservation.isAnonymous) {
                     const user = await User.findOne({ email: reservation.email }).lean();
                     if (user) {
-                        reservation.userId = user._id; // Attach the userId to the reservation
+                        reservation.userId = user._id;
                     }
                 }
                 return reservation;

@@ -11,7 +11,7 @@
         {{/each}}
     </select>
     <input type="date" id="date-selection">
-    <input type="time" id="time-selection">
+    <input type="time" id="time-selection" step="1800">
     <button id="fetch-seats">Check Availability</button>
 </div>
 <div class="table-container">
@@ -35,7 +35,7 @@
     <label for="anonymous_checker">Reserve Anonymously</label>
 </div>
 <input type="button" value="Reserve" class="selBtn" id="reserve">
-<button class="selBtn" id="labtech">Lab Tech's View of Reservation Page</button>
+{{!-- <button class="selBtn" id="labtech">Lab Tech's View of Reservation Page</button> --}}
 
 <!-- Confirmation Popup -->
 <div class="overlay" id="overlay"></div>
@@ -46,7 +46,3 @@
 </div>
 <script src="/common/js/reserveFront.js"></script>
 
-{{! crud }}
-<a href="/reservation-manage" class="selBtn" style="display: block; margin-top: 20px;">
-  Manage My Reservations
-</a>

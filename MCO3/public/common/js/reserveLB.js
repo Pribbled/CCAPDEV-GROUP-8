@@ -19,12 +19,10 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
     hours = hours % 12 || 12;
     let formattedHours = hours.toString().padStart(2, '0');
     let formattedTime = `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
-    console.log("⏰ Formatted Time:", formattedTime);
 
     try {
         const response = await fetch(`/api/seats?lab=${encodeURIComponent(lab)}&date=${encodeURIComponent(date)}&startTime=${encodeURIComponent(formattedTime)}`);
         const availableSeats = await response.json();
-        console.log(availableSeats);
 
         const tableBody = document.getElementById("table-body");
         tableBody.innerHTML = "";
@@ -37,12 +35,7 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
         availableSeats.forEach(seat => {
             const row = document.createElement("tr");
             row.classList.add("available");
-            row.innerHTML = `
-                <tr>
-                <td>${seat.seatNumber}</td>
-                <td>${seat.status}</td>
-                </tr>
-            `;
+            row.innerHTML = `<td>${seat.seatNumber}</td><td>${seat.status}</td>`;
 
             row.addEventListener("click", function () {
                 row.classList.toggle("selected");
@@ -61,29 +54,73 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
         overlay.style.display = 'block';
     });
 
-    confirmReserveButton.addEventListener('click', () => {
+    confirmReserveButton.addEventListener('click', async () => {
+        const reservee = document.getElementById('users').value;
         const isAnonymous = anonymousChecker.checked;
+
+        const selectedSeats = [];
+        document.querySelectorAll(".selected").forEach(row => {
+            selectedSeats.push({ seatNumber: parseInt(row.cells[0].textContent), status: "Reserved" });
+        });
+
+        if (!reservee || selectedSeats.length === 0) {
+            alert("Please select a reservee and at least one seat.");
+            return;
+        }
+
+        function formatTime(hours, minutes) {
+            let period = hours >= 12 ? "PM" : "AM";
+            hours = hours % 12 || 12;
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${period}`;
+        }
+    
+        let [startHours, startMinutes] = startTime.split(":").map(Number);
+        const formattedStartTime = formatTime(startHours, startMinutes);
+    
+        let endHours = startHours;
+        let endMinutes = startMinutes + 30;
+        if (endMinutes >= 60) {
+            endHours += 1;
+            endMinutes -= 60;
+        }
+        const formattedEndTime = formatTime(endHours, endMinutes);
+
         const reservationData = {
-            lab: lab.value,
-            date: date.value,
-            isAnonymous: isAnonymous,
+            lab,
+            date,
+            startTime: formattedStartTime,
+            endTime: formattedEndTime,
+            seats: selectedSeats,
+            reservee,
+            isAnonymous,
         };
 
-        console.log('Reservation Data:', reservationData);
-        alert('Reservation successful!');
-        confirmationPopup.style.display = 'none';
-        overlay.style.display = 'none';
+        try {
+            const response = await fetch('/reservationPageLabtech', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(reservationData)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert(result.message);
+                location.reload();
+            } else {
+                alert("Reservation failed: " + result.error);
+            }
+        } catch (error) {
+            console.error("Error making reservation:", error);
+            alert("Failed to reserve slot.");
+        }
     });
 
     cancelReserveButton.addEventListener('click', () => {
         confirmationPopup.style.display = 'none';
         overlay.style.display = 'none';
     });
-
-    function reservationLabTech() {
-        window.location.href = "/reservationPageLabtech";
-    }
 });
+
 document.getElementById("student").addEventListener("click", function () {
     window.location.href = "/reservationPage"; 
 });
