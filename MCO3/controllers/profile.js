@@ -16,7 +16,7 @@ function add(server) {
             //     return res.status(404).send("User not found");
             // }
 
-            const {name, email, role, profilePicture} = req.session.user;
+            const {name, firstName, lastName, email, role, profilePicture} = req.session.user;
 
             const reservations = await Reservation.find({
                 email: email,
@@ -33,9 +33,10 @@ function add(server) {
                     layout: 'index',
                     title: 'Student Profile',
                     stylesheet: 'profile',
-                    name: name,
+                    firstName: firstName,
+                    lastName: lastName,
                     email: email,
-                    profilePicture: profilePicture || "/common/defaultPfp.jpg",
+                    profilePicture: profilePicture,
                     reservations: reservations,
                     labs: labs,
                 });
@@ -44,9 +45,10 @@ function add(server) {
                     layout: 'index',
                     title: 'Technician Profile',
                     stylesheet: 'profileTechnician',
-                    name: name,
+                    firstName: firstName,
+                    lastName: lastName,
                     email: email,
-                    profilePicture: profilePicture || "/common/defaultPfp.jpg",
+                    profilePicture: profilePicture,
                     reservations: reservations
                 });    
             }
@@ -194,16 +196,31 @@ function add(server) {
      // Update name
      server.post('/profile/update-name', async (req, res) => {
         try {
+            console.log("Session data before update:", req.session);
+    
+            if (!req.session.user) {
+                return res.status(401).send("Unauthorized: User not logged in");
+            }
+    
             const { firstName, lastName } = req.body;
+            console.log("Updating user:", { id: req.session.user._id, firstName, lastName });
+    
             const user = await User.findByIdAndUpdate(
                 req.session.user._id,
                 { firstName, lastName },
                 { new: true }
             );
-
-            req.session.user.firstName = firstName;
-            req.session.user.lastName = lastName;
-
+    
+            if (!user) {
+                return res.status(404).send("User not found");
+            }
+    
+            // Update session data
+            req.session.user.firstName = user.firstName;
+            req.session.user.lastName = user.lastName;
+            
+            console.log("Session data after update:", req.session);
+    
             res.redirect('/profile');
         } catch (error) {
             console.error("Error updating name:", error);

@@ -22,9 +22,13 @@ function add(server){
             }
 
             req.session.user = {
+                _id: user._id,
                 name: user.firstName + " " + user.lastName,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                profilePicture: user.profilePicture,
+                firstName: user.firstName,
+                lastName: user.lastName
             };
 
             console.log("Session created:", req.session.user);
