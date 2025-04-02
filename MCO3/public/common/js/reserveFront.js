@@ -93,8 +93,8 @@ document.getElementById("fetch-seats").addEventListener("click", async () => {
         }
         const formattedEndTime = formatTime(endHours, endMinutes);
     
-        const userEmail = "user@example.com"; //SESSION EMAIL
-        const userName = isAnonymous ? "Anonymous" : "User Name"; //SESSION NAME
+        const userEmail = req.session.user.email; //SESSION EMAIL
+        const userName = isAnonymous ? "Anonymous" : req.session.user.name; //SESSION NAME
     
         const reservationData = {
             lab,

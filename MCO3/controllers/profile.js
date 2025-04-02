@@ -9,15 +9,17 @@ function add(server) {
             if(!req.session.user) {
                 return res.redirect('/login');
             }
-            const userId = req.params.id;
-            const user = await User.findById(userId);
+            // const userId = req.params.id;
+            // const user = await User.findById(userId);
 
-            if (!user) {
-                return res.status(404).send("User not found");
-            }
+            // if (!user) {
+            //     return res.status(404).send("User not found");
+            // }
+
+            const {name, email, role} = req.session.user;
 
             const reservations = await Reservation.find({
-                email: user.email,
+                email: email,
             }).lean();
             const labs = await Lab.find().lean();
 
@@ -26,28 +28,24 @@ function add(server) {
                 seatNumbers: reservation.seats.map(seat => seat.seatNumber).join(", ")
             }));
 
-            // Fetch reservations for the user
-
-
-            const {name, email, role} = req.session.user;
-
             if(role === 'Student') {
                 res.render('profile', {
                     layout: 'index',
                     title: 'Student Profile',
                     stylesheet: 'profile',
                     name: name,
-                    email: email, //user.email,
+                    email: email,
                     profilePicture: "/common/default_pfp.jpg",
-                    reservations: reservations
+                    reservations: reservations,
+                    labs: labs,
                 });
             } else {
                 res.render('profileTechnician', {
                     layout: 'index',
                     title: 'Technician Profile',
                     stylesheet: 'profileTechnician',
-                    name: name, //user.name,
-                    email: email, //user.email,
+                    name: name,
+                    email: email,
                     profilePicture: "/common/default_pfp.jpg",
                     reservations: reservations
                 });    
