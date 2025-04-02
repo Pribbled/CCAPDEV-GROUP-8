@@ -188,3 +188,35 @@
                 });
             });
         });
+
+    function openProfilePictureOverlay() {
+        document.getElementById('profile-picture-overlay').style.display = 'block';
+    }
+
+    function closeProfilePictureOverlay() {
+        document.getElementById('profile-picture-overlay').style.display = 'none';
+    }
+
+    async function updateProfilePicture() {
+        const profilePictureURL = document.getElementById('profile-picture-url').value; // Get the URL from the input field
+    
+        try {
+            const response = await fetch('/profile/update-picture', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ profilePicture: profilePictureURL })
+            });
+    
+            const result = await response.json();
+            if (response.ok) {
+                // Update the profile picture on the page
+                document.querySelector('.profile-container img').src = profilePictureURL;
+                alert("Profile picture updated successfully!");
+            } else {
+                alert(result.error || "Error updating profile picture.");
+            }
+        } catch (error) {
+            console.error("Error updating profile picture:", error);
+            alert("Failed to update profile picture.");
+        }
+    }

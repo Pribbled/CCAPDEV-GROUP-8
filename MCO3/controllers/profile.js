@@ -16,7 +16,7 @@ function add(server) {
             //     return res.status(404).send("User not found");
             // }
 
-            const {name, email, role} = req.session.user;
+            const {name, email, role, profilePicture} = req.session.user;
 
             const reservations = await Reservation.find({
                 email: email,
@@ -35,7 +35,7 @@ function add(server) {
                     stylesheet: 'profile',
                     name: name,
                     email: email,
-                    profilePicture: "/common/default_pfp.jpg",
+                    profilePicture: profilePicture || "/common/default_pfp.jpg",
                     reservations: reservations,
                     labs: labs,
                 });
@@ -46,7 +46,7 @@ function add(server) {
                     stylesheet: 'profileTechnician',
                     name: name,
                     email: email,
-                    profilePicture: "/common/default_pfp.jpg",
+                    profilePicture: profilePicture || "/common/default_pfp.jpg",
                     reservations: reservations
                 });    
             }
@@ -148,6 +148,44 @@ function add(server) {
             res.status(200).json({ message: "Reservation canceled successfully" });
         } catch (error) {
             console.error("Error canceling reservation:", error);
+            res.status(500).send("Internal Server Error");
+        }
+    });
+
+    server.post('/profile/update-picture', async (req, res) => {
+        try {
+            if (!req.session.user) {
+                return res.redirect('/login');
+            }
+    
+            const { profilePicture } = req.body; // Get the profile picture URL from the body
+            const allowedSources = [
+                'https://upload.wikimedia.org',
+                'https://example.com' // Add any other allowed sources here
+            ];
+    
+            // Check if the URL starts with one of the allowed sources
+            const isValidSource = allowedSources.some(source => profilePicture.startsWith(source));
+    
+            if (!isValidSource) {
+                return res.status(400).json({ error: 'Invalid profile picture source.' });
+            }
+    
+            // Update the user's profile picture in the database
+            const user = await User.findOne({ email: req.session.user.email });
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+    
+            user.profilePicture = profilePicture; // Update profile picture
+            await user.save();
+    
+            // Update the session data
+            req.session.user.profilePicture = profilePicture;
+    
+            res.status(200).json({ message: 'Profile picture updated successfully' });
+        } catch (error) {
+            console.error("Error updating profile picture:", error);
             res.status(500).send("Internal Server Error");
         }
     });

@@ -2,10 +2,21 @@
 
 <div class="profile-section">
     <div class="profile-wrapper">
-        <div class="profile-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg?20200418092106" alt="Profile Picture">
-            <img class="edit-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/150px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Edit Icon">
+       <div class="profile-container">
+            <img src="{{profilePicture}}" alt="Profile Picture">
+            <img class="edit-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/150px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Edit Icon" onclick="openProfilePictureOverlay()">
         </div>
+
+        <!-- Overlay for editing profile picture -->
+        <div id="profile-picture-overlay" style="display: none;">
+            <div>
+                <label for="profile-picture-url">Enter URL for Profile Picture:</label>
+                <input type="text" id="profile-picture-url" placeholder="Enter image URL here">
+                <button onclick="updateProfilePicture()">Update Picture</button>
+                <button onclick="closeProfilePictureOverlay()">Cancel</button>
+            </div>
+        </div>
+
         <div class="profile-info">
             <div class="name">{{name}}
                 <button class="name-edit-button" onclick="toggleNameInput()">
@@ -14,8 +25,10 @@
             </div>
             <div id="name-input" style="display: none;">
                 <form action="/profile/update-name" method="POST">
-                    <label for="name">Change Name:</label>
-                    <input type="text" id="name" name="name" value="{{name}}">
+                    <label for="first-name">First Name:</label>
+                    <input type="text" id="first-name" name="firstName" value="{{firstName}}">
+                    <label for="last-name">Last Name:</label>
+                    <input type="text" id="last-name" name="lastName" value="{{lastName}}">
                     <button type="submit">Update Name</button>
                 </form>
             </div>
