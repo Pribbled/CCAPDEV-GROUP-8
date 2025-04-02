@@ -5,23 +5,31 @@ function add(server) {
     // Render student profile page
     server.get('/profile', async function (req, res) {
         try {
-            // const userId = req.params.id;
-            // const user = await User.findById(userId);
+            const userId = req.params.id;
+            const user = await User.findById(userId);
 
-            // if (!user) {
-            //     return res.status(404).send("User not found");
-            // }
+            if (!user) {
+                return res.status(404).send("User not found");
+            }
 
             // Fetch reservations for the user
-            const reservations = await Reservation.find().limit(5).lean();
+            const reservations = await Reservation.find({
+                email: user.email,
+            }).lean();
+
+            const processedReservations = reservations.map(reservation => ({
+                ...reservation,
+                seatNumbers: reservation.seats.map(seat => seat.seatNumber).join(", ")
+            }));
+
             res.render('profile', {
                 layout: 'index',
-                title: 'Student Profile',
+                title: 'My Profile',
                 stylesheet: 'profile',
-                name: 'FirstName LastName', //user.name,
-                email: 'sample@example.com', //user.email,
+                name: `${user.firstName} ${user.lastName}`,
+                email: user.email,
                 profilePicture: "/common/default_pfp.jpg",
-                reservations: reservations
+                reservations: processedReservations
             });
 
         } catch (error) {
