@@ -121,9 +121,9 @@ document.addEventListener("DOMContentLoaded", function () {
     reserveBtn.addEventListener("click", function () {
         window.location.href = "/reservationPage"; 
     });
-    techBtn.addEventListener("click", function () {
-        window.location.href = "/slotsLab"; 
-    });
+    // techBtn.addEventListener("click", function () {
+    //     window.location.href = "/slotsLab"; 
+    // });
 
     [labSelection, dateSelection, timeSelection].forEach(element => {
         element.addEventListener("change", fetchReservations);
