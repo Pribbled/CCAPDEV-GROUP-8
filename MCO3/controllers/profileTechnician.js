@@ -20,7 +20,7 @@ function add(server) {
 
 
 
-            const reservations = await Reservation.find().limit(5).lean();
+            const reservations = await Reservation.find().limit().lean();
             res.render('profileTechnician', {
                 layout: 'index',
                 title: 'Technician Profile',
