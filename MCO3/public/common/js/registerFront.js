@@ -66,9 +66,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({ role, firstName, lastName, email, password })
             });
 
-            const result = await response.text();
+            const result = await response.json();
             console.log("Server Response:", result);
-            alert(result);
+
+            if (response.ok) {
+                alert(result.message); 
+                window.location.href = '/login';
+            } else {
+                alert(result.message);
+            }
         } catch (error) {
             console.error("Error in fetch:", error);
         }

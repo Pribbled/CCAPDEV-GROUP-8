@@ -29,10 +29,10 @@ function add(server){
             await newUser.save();
             console.log("User saved:", newUser);
 
-            resp.status(201).send('User registered successfully!');
+            resp.status(201).json({ message: 'User registered successfully!' });
         } catch (err) {
             console.error(err);
-            resp.status(500).send('Error registering user.');
+            resp.status(500).json({ message: 'Error registering user.' });
         }
     });
 }
