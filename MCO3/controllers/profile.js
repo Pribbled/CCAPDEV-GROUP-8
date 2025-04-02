@@ -4,7 +4,7 @@ const Lab = require("../models/lab");
 
 function add(server) {
     // Render student profile page
-    server.get('/profile/:id', async function (req, res) {
+    server.get('/profile', async function (req, res) {
         try {
             const userId = req.params.id;
             const user = await User.findById(userId);
@@ -115,6 +115,22 @@ function add(server) {
             res.status(200).json({ message: "Reservation updated successfully." });
         } catch (error) {
             console.error("Error updating reservation:", error);
+            res.status(500).send("Internal Server Error");
+        }
+    });
+
+    server.post('/profile/cancel-reservation', async (req, res) => {
+        try {
+            const { reservationId } = req.body;
+            const deletedReservation = await Reservation.findByIdAndDelete(reservationId);
+            
+            if (!deletedReservation) {
+                return res.status(404).json({ error: "Reservation not found" });
+            }
+            
+            res.status(200).json({ message: "Reservation canceled successfully" });
+        } catch (error) {
+            console.error("Error canceling reservation:", error);
             res.status(500).send("Internal Server Error");
         }
     });

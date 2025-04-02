@@ -147,3 +147,35 @@
             nameElement.appendChild(nameInput);
             nameInput.focus();
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".cancel-button").forEach(button => {
+                button.addEventListener("click", async (event) => {
+                    const reservationBox = event.target.closest(".reservation-box");
+                    const reservationId = reservationBox.getAttribute("data-reservation-id");
+                    
+                    if (!confirm("Are you sure you want to cancel this reservation?")) {
+                        return;
+                    }
+                    
+                    try {
+                        const response = await fetch("/profile/cancel-reservation", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ reservationId })
+                        });
+                        
+                        const result = await response.json();
+                        if (response.ok) {
+                            alert("Reservation canceled successfully!");
+                            reservationBox.remove();
+                        } else {
+                            alert(result.error || "Error canceling reservation.");
+                        }
+                    } catch (error) {
+                        console.error("Error canceling reservation:", error);
+                        alert("Failed to cancel reservation.");
+                    }
+                });
+            });
+        });
