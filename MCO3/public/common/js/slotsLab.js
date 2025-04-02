@@ -5,6 +5,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const slotsBtn = document.getElementById("slotsBtn");
     const tableBody = document.getElementById("table-body");
 
+    async function removeSlot(button, reservationId) {
+        if (!confirm("Are you sure you want to remove this reservation?")) {
+            return;
+        }
+    
+        try {
+            const response = await fetch(`/api/reservations/${reservationId}`, {
+                method: "DELETE"
+            });
+    
+            if (response.ok) {
+                alert("Reservation removed successfully.");
+                fetchReservations();
+            } else {
+                alert("Failed to remove reservation.");
+            }
+        } catch (error) {
+            console.error("Error removing reservation:", error);
+        }
+    }
+    
+
     function formatTime(timeValue) {
         if (!timeValue || !timeValue.includes(":")) return null;
         let [hours, minutes] = timeValue.split(":").map(Number);
@@ -45,25 +67,28 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Received reservations:", reservations);
 
             tableBody.innerHTML = ""; 
-            const reservedSeats = reservations.flatMap(reservation =>
-                reservation.seats.map(seat => ({
-                    seatNumber: seat.seatNumber,
+            const reservedRows = reservations.map(reservation => {
+                return {
+                    reservationId: reservation._id,
+                    lab: reservation.lab,
                     reservee: reservation.isAnonymous ? "Anonymous" : reservation.name,
-                    reservationId: reservation.id
-                }))
-            ).sort((a, b) => a.seatNumber - b.seatNumber); 
+                    seats: reservation.seats.map(seat => seat.seatNumber).join(", "),
+                    startTime: reservation.startTime
+                };
+            });
+             
 
-            if (reservedSeats.length === 0) {
+            if (reservedRows.length === 0) {
                 console.log("No reservations found.");
                 tableBody.innerHTML = "<tr><td colspan='4'>No reservations found.</td></tr>";
                 return;
             }
 
-            reservedSeats.forEach(seat => {
+            reservedRows.forEach(seat => {
                 const row = document.createElement("tr");
             
                 const seatCell = document.createElement("td");
-                seatCell.textContent = seat.seatNumber;
+                seatCell.textContent = seat.seats;
             
                 const statusCell = document.createElement("td");
                 statusCell.textContent = "Reserved";
@@ -89,9 +114,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     const removeButton = document.createElement("button");
                     removeButton.textContent = "Remove";
                     removeButton.classList.add("cancel-slot");
-                    removeButton.onclick = function () {
-                        removeSlot(this, seat.reservationId);
-                    };
+                    if (seat.reservationId) {
+                        removeButton.onclick = function () {
+                            removeSlot(this, seat.reservationId);
+                        };
+                    } else {
+                        console.error("Missing reservationId for seat:", seat);
+                    }
                     actionCell.appendChild(removeButton);
                 }
                 
