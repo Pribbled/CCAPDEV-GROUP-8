@@ -36,8 +36,8 @@ function add(server) {
                     firstName: firstName,
                     lastName: lastName,
                     email: email,
-                    profilePicture: profilePicture,
-                    reservations: reservations,
+                    profilePicture: profilePicture || "/common/defaultPfp.jpg",
+                    reservations: processedReservations,
                     labs: labs,
                 });
             } else {
@@ -62,7 +62,7 @@ function add(server) {
     function convertTo12HourFormat(time) {
         const [hours, minutes] = time.split(":").map(Number);
         const suffix = hours >= 12 ? "PM" : "AM";
-        const formattedHours = String(((hours + 11) % 12 + 1)).padStart(2, "0"); // Ensures two digits
+        const formattedHours = String(((hours + 11) % 12 + 1)).padStart(2, "0");
         return `${formattedHours}:${minutes.toString().padStart(2, "0")} ${suffix}`;
     }
 
@@ -129,6 +129,8 @@ function add(server) {
             reservation.seats = seats.map(seatNumber => ({ seatNumber, status: "Reserved" }));
             reservation.isAnonymous = isAnonymous || false;
             reservation.requestDate = new Date().toISOString().split('T')[0];
+
+            console.log(reservation.seats);
             
             await reservation.save();
             res.status(200).json({ message: "Reservation updated successfully." });

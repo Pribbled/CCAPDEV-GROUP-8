@@ -4,12 +4,14 @@ const server = express();
 
 const session = require('express-session');
 const mongoStore = require('connect-mongodb-session')(session);
+const linkmongo = 'mongodb+srv://joshuadomanais:ccapdev@cluster0.iyyj8cv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const linkold = 'mongodb://127.0.0.1:27017/ccapdev';
 server.use(session({
     secret: 'lab-key',
     resave: false,
     saveUninitialized: false,
     store: new mongoStore({
-        uri: 'mongodb://127.0.0.1:27017/ccapdev',
+        uri: linkmongo,
         collection: 'sessions',
     }),
 }));
@@ -38,7 +40,7 @@ for (var i = 0; i < controllers.length; i++) {
 }
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1:27017/ccapdev').then(() => console.log('MongoDB connected')).catch(err => console.log(err));
+mongoose.connect(linkmongo).then(() => console.log('MongoDB connected')).catch(err => console.log(err));
 
 // AUTOMATIC SEEDING
 const fs = require('fs');
