@@ -4,6 +4,7 @@ const server = express();
 
 const session = require('express-session');
 const mongoStore = require('connect-mongodb-session')(session);
+const linkmongo = 'mongodb+srv://joshuadomanais:ccapdev@cluster0.iyyj8cv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 server.use(session({
     secret: 'lab-key',
     resave: false,
