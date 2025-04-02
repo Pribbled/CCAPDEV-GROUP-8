@@ -1,9 +1,9 @@
 function handleProfile() {
-    window.location.href = '/login'; 
+    window.location.href = '/profile'; 
 }
 
 function handleReserve() {
-    window.location.href = '/reservationPage';
+    window.location.href = '/reservationPage'; 
 }
 
 function handleViewLabs() {

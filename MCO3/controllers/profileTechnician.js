@@ -12,13 +12,21 @@ function add(server) {
             // }
 
             // Fetch walk-in reservations for the technician's lab
+            if(!req.session.user) {
+                return res.redirect('/login');
+            }
+
+            const {name, email, role} = req.session.user;
+
+
+
             const reservations = await Reservation.find().limit(5).lean();
             res.render('profileTechnician', {
                 layout: 'index',
                 title: 'Technician Profile',
                 stylesheet: 'profileTechnician',
-                name: 'FirstName LastName', //user.name,
-                email: 'sample@example.com', //user.email,
+                name: name, //user.name,
+                email: email, //user.email,
                 profilePicture: "/common/default_pfp.jpg",
                 reservations: reservations
             });

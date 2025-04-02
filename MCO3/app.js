@@ -2,8 +2,20 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const server = express();
 
+const session = require('express-session');
+const mongoStore = require('connect-mongodb-session')(session);
+server.use(session({
+    secret: 'lab-key',
+    resave: false,
+    saveUninitialized: false,
+    store: new mongoStore({
+        uri: 'mongodb://127.0.0.1:27017/ccapdev',
+        collection: 'sessions',
+    }),
+}));
+
 const bodyParser = require('body-parser');
-server.use(express.json()); 
+server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
 const handlebars = require('express-handlebars');
@@ -19,9 +31,9 @@ server.engine('hbs', handlebars.engine({
 
 server.use(express.static('public'));
 
-const controllers = ['routes','reserve','reserveLab', 'login', 'register', 'slots', 'slotsLab', 'profile', 'profileTechnician', 'profileVisit'];
-for(var i=0; i<controllers.length; i++){
-    const model = require('./controllers/'+controllers[i]);
+const controllers = ['routes', 'reserve', 'reserveLab', 'login', 'register', 'slots', 'slotsLab', 'profile', 'profileTechnician', 'profileVisit'];
+for (var i = 0; i < controllers.length; i++) {
+    const model = require('./controllers/' + controllers[i]);
     model.add(server);
 }
 
@@ -75,7 +87,13 @@ async function seedData() {
 // seedData();  // Comment this out to remove auto-seeding
 // AUTOMATIC SEEDING
 
+server.get('/logout', function(req, resp) {
+    req.session.destroy((err) => {
+        resp.status(200).json({ message: "Logged out successfully" });
+    });
+});
+
 const port = process.env.PORT || 3000;
-server.listen(port, function(){
-    console.log('Listening at port '+port);
+server.listen(port, function () {
+    console.log('Listening at port ' + port);
 });
